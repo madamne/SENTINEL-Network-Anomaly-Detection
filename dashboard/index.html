@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SENTINEL — SOC Dashboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f1f5f9;
+  --surface:#ffffff;
+  --surface2:#f8fafc;
+  --border:#e2e8f0;
+  --border2:#cbd5e1;
+  --text:#0f172a;
+  --text2:#334155;
+  --muted:#64748b;
+  --muted2:#94a3b8;
+  --accent:#2563eb;
+  --accent-light:#dbeafe;
+  --accent-mid:#93c5fd;
+  --danger:#dc2626;
+  --danger-light:#fef2f2;
+  --danger-mid:#fca5a5;
+  --warn:#d97706;
+  --warn-light:#fffbeb;
+  --warn-mid:#fcd34d;
+  --ok:#16a34a;
+  --ok-light:#f0fdf4;
+  --ok-mid:#86efac;
+  --purple:#7c3aed;
+  --purple-light:#ede9fe;
+  --shadow-sm:0 1px 2px rgba(15,23,42,.06),0 1px 3px rgba(15,23,42,.1);
+  --shadow:0 4px 6px -1px rgba(15,23,42,.07),0 2px 4px -2px rgba(15,23,42,.07);
+  --shadow-md:0 10px 15px -3px rgba(15,23,42,.08),0 4px 6px -4px rgba(15,23,42,.05);
+  --radius:10px;
+  --radius-sm:6px;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  font-size:14px;
+  min-height:100vh;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+header{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:0 28px;
+  height:60px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:var(--shadow-sm);
+}
+.header-logo{display:flex;align-items:center;gap:10px}
+.header-logo svg{color:var(--accent)}
+.logo-text{font-size:17px;font-weight:800;color:var(--text);letter-spacing:1.5px}
+.logo-version{font-size:10px;font-weight:600;color:var(--accent);background:var(--accent-light);padding:2px 7px;border-radius:20px;letter-spacing:.5px}
+.header-sub{font-size:11px;color:var(--muted);margin-left:4px;padding-left:16px;border-left:1px solid var(--border)}
+.header-right{display:flex;align-items:center;gap:16px;margin-left:auto}
+.ws-badge{display:flex;align-items:center;gap:7px;padding:5px 12px;border-radius:20px;background:var(--surface2);border:1px solid var(--border);font-size:12px;font-weight:500;color:var(--muted)}
+.ws-dot{width:8px;height:8px;border-radius:50%;background:var(--muted2);transition:background .3s,box-shadow .3s}
+.ws-dot.live{background:var(--ok);box-shadow:0 0 0 2px var(--ok-mid)}
+.ws-dot.err{background:var(--danger)}
+#status-text{font-size:12px}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;letter-spacing:.2px}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#1d4ed8}
+.btn-primary:disabled{opacity:.45;cursor:not-allowed}
+.btn-outline{background:transparent;color:var(--text2);border:1px solid var(--border2)}
+.btn-outline:hover{background:var(--surface2)}
+.btn-sm{padding:5px 12px;font-size:12px}
+
+/* ── Layout ─────────────────────────────────────────────────────────── */
+main{padding:24px 28px;display:grid;gap:20px;max-width:1600px;margin:0 auto}
+
+/* ── Stat Cards ─────────────────────────────────────────────────────── */
+.stats-row{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+@media(max-width:1200px){.stats-row{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+
+.stat-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px 20px 16px;
+  box-shadow:var(--shadow-sm);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  position:relative;
+  overflow:hidden;
+}
+.stat-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:var(--accent);
+  border-radius:var(--radius) var(--radius) 0 0;
+}
+.stat-card.danger::before{background:var(--danger)}
+.stat-card.warn::before{background:var(--warn)}
+.stat-card.ok::before{background:var(--ok)}
+.stat-card.purple::before{background:var(--purple)}
+
+.stat-icon{
+  width:36px;height:36px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--accent-light);color:var(--accent);
+}
+.stat-card.danger .stat-icon{background:var(--danger-light);color:var(--danger)}
+.stat-card.warn .stat-icon{background:var(--warn-light);color:var(--warn)}
+.stat-card.ok .stat-icon{background:var(--ok-light);color:var(--ok)}
+.stat-card.purple .stat-icon{background:var(--purple-light);color:var(--purple)}
+
+.stat-val{font-size:28px;font-weight:800;color:var(--text);line-height:1}
+.stat-card.danger .stat-val{color:var(--danger)}
+.stat-card.warn .stat-val{color:var(--warn)}
+.stat-card.ok .stat-val{color:var(--ok)}
+.stat-card.purple .stat-val{color:var(--purple)}
+.stat-lbl{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.8px}
+
+/* ── Panel ──────────────────────────────────────────────────────────── */
+.panel{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);
+  overflow:hidden;
+}
+.panel-header{
+  padding:14px 20px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.panel-title{
+  font-size:13px;
+  font-weight:700;
+  color:var(--text2);
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.panel-title svg{color:var(--muted);width:16px;height:16px}
+.panel-body{padding:0}
+
+/* ── Grid helpers ───────────────────────────────────────────────────── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+@media(max-width:1024px){.two-col{grid-template-columns:1fr}.three-col{grid-template-columns:1fr}}
+
+/* ── Table ──────────────────────────────────────────────────────────── */
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{
+  padding:11px 16px;
+  text-align:left;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.6px;
+  color:var(--muted);
+  font-weight:700;
+  background:var(--surface2);
+  border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+tbody td{
+  padding:11px 16px;
+  border-bottom:1px solid var(--border);
+  color:var(--text2);
+  vertical-align:middle;
+}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#f8fafc}
+
+/* ── Badges ─────────────────────────────────────────────────────────── */
+.badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 9px;border-radius:20px;
+  font-size:11px;font-weight:700;letter-spacing:.4px;
+  white-space:nowrap;
+}
+.badge-danger{background:var(--danger-light);color:var(--danger)}
+.badge-warn{background:var(--warn-light);color:var(--warn)}
+.badge-ok{background:var(--ok-light);color:var(--ok)}
+.badge-info{background:var(--accent-light);color:var(--accent)}
+.badge-purple{background:var(--purple-light);color:var(--purple)}
+
+/* ── Score bar ──────────────────────────────────────────────────────── */
+.score-bar{display:flex;align-items:center;gap:8px}
+.score-bar .bar{
+  flex:1;height:5px;background:var(--border);
+  border-radius:3px;overflow:hidden;min-width:60px;
+}
+.score-bar .fill{height:100%;border-radius:3px;transition:width .4s}
+
+/* ── Alert Feed ─────────────────────────────────────────────────────── */
+#alerts-feed{max-height:340px;overflow-y:auto}
+.alert-item{
+  padding:12px 16px;
+  border-left:3px solid var(--danger);
+  border-bottom:1px solid var(--border);
+  background:var(--surface);
+  transition:background .15s;
+}
+.alert-item:hover{background:var(--danger-light)}
+.alert-item:last-child{border-bottom:none}
+.alert-item.warn{border-left-color:var(--warn)}
+.alert-item.warn:hover{background:var(--warn-light)}
+.alert-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.alert-time{font-size:11px;color:var(--muted);font-weight:500}
+.alert-mac{font-size:11px;color:var(--muted2);font-family:monospace}
+.alert-score-val{font-size:13px;font-weight:700;margin-left:auto}
+.alert-detail{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.4}
+.empty-state{padding:32px;text-align:center;color:var(--muted2);font-size:13px}
+
+/* ── Demo control bar ───────────────────────────────────────────────── */
+.demo-bar{
+  display:flex;align-items:center;gap:16px;
+  padding:14px 20px;
+  background:var(--accent-light);
+  border-bottom:1px solid #bfdbfe;
+}
+.demo-bar p{font-size:12px;color:#1e40af;flex:1}
+#demo-status{font-size:12px;font-weight:600;color:var(--accent)}
+
+/* ── Metric cards grid ──────────────────────────────────────────────── */
+.metrics-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:16px}
+@media(max-width:900px){.metrics-grid{grid-template-columns:repeat(3,1fr)}}
+.metric-card{
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:14px 12px;
+  text-align:center;
+}
+.metric-val{font-size:24px;font-weight:800;color:var(--accent)}
+.metric-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:4px;font-weight:600}
+
+/* ── Per attack bars ────────────────────────────────────────────────── */
+.attack-row{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border)}
+.attack-row:last-child{border-bottom:none}
+.attack-name{width:130px;font-size:12px;color:var(--text2);font-weight:500;white-space:nowrap}
+.attack-rate-val{font-size:13px;font-weight:800;width:44px;text-align:right}
+.attack-count{font-size:11px;color:var(--muted2);width:44px;text-align:right}
+
+/* ── Canvas charts ──────────────────────────────────────────────────── */
+.chart-wrap{padding:16px;background:var(--surface)}
+canvas{display:block;width:100%;border-radius:var(--radius-sm)}
+#score-canvas{height:180px}
+#roc-canvas{height:210px}
+
+/* ── SOTA table ─────────────────────────────────────────────────────── */
+.sota-row-sentinel td{
+  color:var(--accent);
+  font-weight:700;
+  background:var(--accent-light)!important;
+}
+
+/* ── Confetti / pulse for live alerts ──────────────────────────────── */
+@keyframes fadeSlide{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.alert-item.new{animation:fadeSlide .3s ease}
+
+/* ── Scrollbar ──────────────────────────────────────────────────────── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted2)}
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+footer{text-align:center;padding:20px;font-size:11px;color:var(--muted2);border-top:1px solid var(--border);background:var(--surface);margin-top:8px}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ──────────────────────────────────────────────────────────────── -->
+<header>
+  <div class="header-logo">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+    <span class="logo-text">SENTINEL</span>
+    <span class="logo-version">v1.0</span>
+  </div>
+  <span class="header-sub">Network Behavioral Anomaly Detection System</span>
+  <div class="header-right">
+    <div class="ws-badge">
+      <div class="ws-dot" id="status-dot"></div>
+      <span id="status-text">Bağlanıyor…</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── MAIN ────────────────────────────────────────────────────────────────── -->
+<main>
+
+  <!-- ── KPI Cards ──────────────────────────────────────────────────────────── -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <div class="stat-val" id="s-packets">—</div>
+      <div class="stat-lbl">Toplam Paket</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      </div>
+      <div class="stat-val" id="s-windows">—</div>
+      <div class="stat-lbl">Zaman Penceresi</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      </div>
+      <div class="stat-val" id="s-devices">—</div>
+      <div class="stat-lbl">Aktif Cihaz</div>
+    </div>
+    <div class="stat-card danger">
+      <div class="stat-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div class="stat-val" id="s-alerts">—</div>
+      <div class="stat-lbl">Aktif Uyarı</div>
+    </div>
+    <div class="stat-card warn">
+      <div class="stat-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="stat-val" id="s-threats">—</div>
+      <div class="stat-lbl">Tehdit Tespit</div>
+    </div>
+    <div class="stat-card ok">
+      <div class="stat-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <div class="stat-val" id="s-safe">—</div>
+      <div class="stat-lbl">Güvenli Pencere</div>
+    </div>
+  </div>
+
+  <!-- Demo kontrolü devre dışı — yalnızca canlı trafik gösterilir -->
+
+  <!-- ── Devices + Alerts ───────────────────────────────────────────────────── -->
+  <div class="two-col">
+
+    <!-- Device Table -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Cihaz İzleme
+        </div>
+        <span style="font-size:11px;color:var(--muted)" id="device-count"></span>
+      </div>
+      <div class="panel-body">
+        <table>
+          <thead>
+            <tr>
+              <th>Cihaz</th>
+              <th>IP Adresi</th>
+              <th>Tehdit Skoru</th>
+              <th>Durum</th>
+              <th>Son Aktif</th>
+            </tr>
+          </thead>
+          <tbody id="devices-tbody">
+            <tr><td colspan="5" class="empty-state">Veri bekleniyor…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Alert Feed -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          Uyarı Akışı
+        </div>
+        <span id="alert-count" style="font-size:12px;font-weight:700;color:var(--danger)"></span>
+      </div>
+      <div id="alerts-feed">
+        <div class="empty-state">Henüz uyarı yok</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Anomaly Timeline ───────────────────────────────────────────────────── -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Anomali Skor Zaman Çizelgesi
+      </div>
+      <span style="font-size:11px;color:var(--muted)">Eşik: 0.55 &nbsp;|&nbsp; 5 dk pencere</span>
+    </div>
+    <div class="chart-wrap"><canvas id="score-canvas"></canvas></div>
+  </div>
+
+  <!-- ── Metrics + ROC ──────────────────────────────────────────────────────── -->
+  <div class="two-col">
+
+    <!-- Metrics -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Model Performans Metrikleri
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="loadMetrics()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Yenile
+        </button>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric-card"><div class="metric-val" id="m-f1">—</div><div class="metric-lbl">F1-Score</div></div>
+        <div class="metric-card"><div class="metric-val" id="m-prec">—</div><div class="metric-lbl">Precision</div></div>
+        <div class="metric-card"><div class="metric-val" id="m-rec">—</div><div class="metric-lbl">Recall</div></div>
+        <div class="metric-card"><div class="metric-val" id="m-auc">—</div><div class="metric-lbl">ROC-AUC</div></div>
+        <div class="metric-card"><div class="metric-val" id="m-acc">—</div><div class="metric-lbl">Accuracy</div></div>
+      </div>
+      <div id="per-attack-area"></div>
+    </div>
+
+    <!-- ROC Curve -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M3 20c3-6 6-10 9-10s6 4 9 4"/></svg>
+          ROC Eğrisi
+        </div>
+        <span id="auc-badge" style="font-size:12px;font-weight:700;color:var(--accent)"></span>
+      </div>
+      <div class="chart-wrap"><canvas id="roc-canvas"></canvas></div>
+    </div>
+
+  </div>
+
+  <!-- ── SOTA Comparison ───────────────────────────────────────────────────── -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Literatür Karşılaştırması — SOTA
+      </div>
+    </div>
+    <div class="panel-body">
+      <table>
+        <thead>
+          <tr>
+            <th>Sistem</th>
+            <th>Özellik Sayısı</th>
+            <th>Yöntem</th>
+            <th>Veri Seti</th>
+            <th>F1-Score</th>
+          </tr>
+        </thead>
+        <tbody id="sota-tbody">
+          <tr><td colspan="5" class="empty-state">Metrikler yükleniyor…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  SENTINEL v1.0 &nbsp;|&nbsp; Bilgisayar Mühendisliği Bitirme Projesi &nbsp;|&nbsp;
+  LSTM-AE + Z-score Hybrid IDS &nbsp;|&nbsp; Claude API LLM Explainability
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════════════
+//  Helpers
+// ══════════════════════════════════════════════════════════════════════════════
+const CSS = {
+  danger:'#dc2626', dangerBg:'#fef2f2',
+  warn:'#d97706',   warnBg:'#fffbeb',
+  ok:'#16a34a',     okBg:'#f0fdf4',
+  accent:'#2563eb', accentBg:'#dbeafe',
+  purple:'#7c3aed', purpleBg:'#ede9fe',
+  border:'#e2e8f0', muted:'#64748b', text:'#0f172a',
+  surface:'#ffffff', surface2:'#f8fafc',
+};
+
+function scoreColor(s){
+  if(s>=0.7) return CSS.danger;
+  if(s>=0.45) return CSS.warn;
+  return CSS.ok;
+}
+function scoreBg(s){
+  if(s>=0.7) return CSS.dangerBg;
+  if(s>=0.45) return CSS.warnBg;
+  return CSS.okBg;
+}
+function scoreLabel(s){
+  if(s>=0.7) return '<span class="badge badge-danger">TEHDİT</span>';
+  if(s>=0.45) return '<span class="badge badge-warn">ŞÜPHELI</span>';
+  return '<span class="badge badge-ok">NORMAL</span>';
+}
+function attackBadge(t){
+  const map={
+    PORT_SCAN:'Port Tarama', DNS_TUNNEL:'DNS Tünel',
+    EXFILTRATION:'Veri Sızdırma', LATERAL_MOVEMENT:'Yanal Hareket',
+    normal:'Normal', NORMAL:'Normal',
+  };
+  if(!t||t==='normal'||t==='NORMAL') return '<span class="badge badge-ok">Normal</span>';
+  const cls = t==='PORT_SCAN'||t==='port_scan' ? 'badge-info'
+    : t==='DNS_TUNNEL'||t==='dns_tunnel' ? 'badge-purple'
+    : 'badge-danger';
+  return `<span class="badge ${cls}">${map[t]||t}</span>`;
+}
+function fmt(v,dec=3){return (parseFloat(v)||0).toFixed(dec)}
+
+// ══════════════════════════════════════════════════════════════════════════════
+//  WebSocket
+// ══════════════════════════════════════════════════════════════════════════════
+let ws, reconnectTimer;
+const dot  = document.getElementById('status-dot');
+const stxt = document.getElementById('status-text');
+
+function connect(){
+  ws = new WebSocket(`ws://${location.host}/ws`);
+  ws.onopen = ()=>{
+    dot.className='ws-dot live';
+    stxt.textContent='Canlı Bağlantı';
+  };
+  ws.onclose= ()=>{
+    dot.className='ws-dot err';
+    stxt.textContent='Bağlantı Kesildi';
+    clearTimeout(reconnectTimer);
+    reconnectTimer=setTimeout(connect,4000);
+  };
+  ws.onerror= ()=>{ dot.className='ws-dot err'; };
+  ws.onmessage=(e)=>{
+    const msg=JSON.parse(e.data);
+    if(msg.type==='snapshot'||msg.type==='update'){
+      if(msg.stats)   updateStats(msg.stats);
+      if(msg.devices) updateDevices(msg.devices);
+      if(msg.alerts)  updateAlerts(msg.alerts);
+      loadWindows();
+    }
+    if(msg.type==='demo_done'){
+      document.getElementById('demo-status').textContent='✓ Demo tamamlandı';
+      document.getElementById('demo-btn').disabled=false;
+      loadMetrics();
+    }
+    if(msg.type==='demo_error'){
+      document.getElementById('demo-status').textContent='Hata: '+msg.error;
+      document.getElementById('demo-btn').disabled=false;
+    }
+  };
+}
+connect();
+
+// ══════════════════════════════════════════════════════════════════════════════
+//  Stats
+// ══════════════════════════════════════════════════════════════════════════════
+function updateStats(s){
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=(v||0).toLocaleString('tr-TR')};
+  set('s-packets', s.total_packets);
+  set('s-windows', s.total_windows);
+  set('s-devices', s.devices);
+  set('s-alerts',  s.alerts);
+  set('s-threats', s.threats);
+  set('s-safe',    s.safe);
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+//  Devices Table
+// ══════════════════════════════════════════════════════════════════════════════
+function updateDevices(devices){
+  const tb = document.getElementById('devices-tbody');
+  const cnt = document.getElementById('device-count');
+  cnt.textContent = `${devices.length} cihaz`;
+  if(!devices.length){
+    tb.innerHTML='<tr><td colspan="5" class="empty-state">Cihaz verisi bekleniyor…</td></tr>';
+    return;
+  }
+  tb.innerHTML = devices.slice(0,20).map(d=>{
+    const raw  = parseInt(d.threat_score||0);
+    const sc   = raw/100;
+    const pct  = Math.min(raw,100);
+    const col  = scoreColor(sc);
+    return `<tr>
+      <td><span style="font-family:monospace;font-size:12px;font-weight:600;color:var(--text2)">${d.device_id||d.mac||'—'}</span></td>
+      <td><span style="font-family:monospace;font-size:12px;color:var(--muted)">${d.ip||'—'}</span></td>
+      <td>
+        <div class="score-bar">
+          <div class="bar"><div class="fill" style="width:${pct}%;background:${col}"></div></div>
+          <span style="font-size:12px;font-weight:700;color:${col};min-width:28px;text-align:right">${raw}</span>
+        </div>
+      </td>
+      <td>${scoreLabel(sc)}</td>
+      <td style="color:var(--muted);font-size:12px">${d.last_seen_fmt||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+//  Alert Feed
+// ══════════════════════════════════════════════════════════════════════════════
+function updateAlerts(alerts){
+  const feed = document.getElementById('alerts-feed');
+  const cnt  = document.getElementById('alert-count');
+  if(!alerts.length){
+    cnt.textContent='';
+    feed.innerHTML='<div class="empty-state">Henüz uyarı yok</div>';
+    return;
+  }
+  cnt.textContent=`${alerts.length} aktif`;
+  const isWarn = t => t && (t.includes('DNS') || t.includes('LATERAL'));
+  feed.innerHTML = alerts.slice(0,20).map(a=>{
+    const score = parseFloat(a.anomaly_score)||0;
+    const warnCls = isWarn(a.attack_type) ? ' warn' : '';
+    return `<div class="alert-item${warnCls}">
+      <div class="alert-meta">
+        <span class="alert-time">${a.ts_fmt||'—'}</span>
+        <span class="alert-mac">${a.device_mac||'?'}</span>
+        ${attackBadge(a.attack_type||'normal')}
+        <span class="alert-score-val" style="color:${scoreColor(score)}">${score.toFixed(3)}</span>
+      </div>
+      ${a.details?`<div class="alert-detail">${a.details}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+//  Score Timeline Chart — /api/windows'dan gerçek anomaly_score
+// ══════════════════════════════════════════════════════════════════════════════
+async function loadWindows(){
+  try{
+    const rows=await fetch('/api/windows?limit=200').then(r=>r.json());
+    if(!Array.isArray(rows)||!rows.length) return;
+    // grafik verisi: {score, ts_fmt}
+    const data=rows.map(r=>({score:parseFloat(r.anomaly_score)||0,ts_fmt:r.ts_fmt||''}));
+    drawLineChart('score-canvas',data,'score',0.55);
+  }catch(e){console.warn('Windows yüklenemedi:',e);}
+}
+
+function drawLineChart(canvasId,data,key,threshold){
+  const canvas=document.getElementById(canvasId);
+  if(!canvas) return;
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.offsetWidth||700, H=canvas.offsetHeight||180;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  ctx.clearRect(0,0,W,H);
+
+  const pad={t:12,r:16,b:32,l:44};
+  const cW=W-pad.l-pad.r, cH=H-pad.t-pad.b;
+
+  // Background
+  ctx.fillStyle=CSS.surface; ctx.fillRect(0,0,W,H);
+
+  // Grid lines
+  ctx.strokeStyle=CSS.border; ctx.lineWidth=1;
+  for(let v=0;v<=1;v+=0.25){
+    const y=pad.t+(1-v)*cH;
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cW,y); ctx.stroke();
+    ctx.fillStyle=CSS.muted; ctx.font='10px Inter,sans-serif'; ctx.textAlign='right';
+    ctx.fillText(v.toFixed(2),pad.l-6,y+4);
+  }
+
+  // Threshold band
+  const ty=pad.t+(1-threshold)*cH;
+  const grad=ctx.createLinearGradient(0,ty,0,pad.t+cH);
+  grad.addColorStop(0,'rgba(220,38,38,0.08)');
+  grad.addColorStop(1,'rgba(220,38,38,0)');
+  ctx.fillStyle=grad; ctx.fillRect(pad.l,pad.t,cW,ty-pad.t);
+
+  // Threshold line
+  ctx.beginPath(); ctx.strokeStyle='rgba(220,38,38,0.5)';
+  ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
+  ctx.moveTo(pad.l,ty); ctx.lineTo(pad.l+cW,ty); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle='rgba(220,38,38,0.7)'; ctx.font='10px Inter,sans-serif'; ctx.textAlign='left';
+  ctx.fillText('eşik 0.55',pad.l+4,ty-4);
+
+  if(!data.length) return;
+
+  // Area fill under line
+  const aGrad=ctx.createLinearGradient(0,pad.t,0,pad.t+cH);
+  aGrad.addColorStop(0,'rgba(37,99,235,0.15)');
+  aGrad.addColorStop(1,'rgba(37,99,235,0)');
+  ctx.beginPath();
+  data.forEach((pt,i)=>{
+    const x=pad.l+i/Math.max(data.length-1,1)*cW;
+    const y=pad.t+(1-(pt[key]||0))*cH;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.lineTo(pad.l+cW,pad.t+cH);
+  ctx.lineTo(pad.l,pad.t+cH);
+  ctx.closePath(); ctx.fillStyle=aGrad; ctx.fill();
+
+  // Line
+  ctx.beginPath(); ctx.strokeStyle=CSS.accent; ctx.lineWidth=2.5;
+  data.forEach((pt,i)=>{
+    const x=pad.l+i/Math.max(data.length-1,1)*cW;
+    const y=pad.t+(1-(pt[key]||0))*cH;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+
+  // Anomaly dots
+  data.forEach((pt,i)=>{
+    const s=pt[key]||0;
+    if(s>=threshold){
+      const x=pad.l+i/Math.max(data.length-1,1)*cW;
+      const y=pad.t+(1-s)*cH;
+      ctx.beginPath(); ctx.fillStyle=scoreColor(s);
+      ctx.arc(x,y,5,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle='#fff'; ctx.lineWidth=1.5;
+      ctx.stroke();
+    }
+  });
+
+  // Axis labels
+  ctx.fillStyle=CSS.muted; ctx.font='10px Inter,sans-serif'; ctx.textAlign='center';
+  ctx.fillText('Zaman →',pad.l+cW/2,H-6);
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+//  ROC Curve (Light Mode)
+// ══════════════════════════════════════════════════════════════════════════════
+function drawROC(points){
+  const canvas=document.getElementById('roc-canvas');
+  if(!canvas||!points||!points.length) return;
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.offsetWidth||460, H=canvas.offsetHeight||210;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  const pad={t:14,r:20,b:36,l:44};
+  const cW=W-pad.l-pad.r, cH=H-pad.t-pad.b;
+
+  ctx.fillStyle=CSS.surface; ctx.fillRect(0,0,W,H);
+
+  // Grid
+  ctx.strokeStyle=CSS.border; ctx.lineWidth=1;
+  [0,0.25,0.5,0.75,1].forEach(v=>{
+    const xg=pad.l+v*cW, yg=pad.t+(1-v)*cH;
+    ctx.beginPath(); ctx.moveTo(xg,pad.t); ctx.lineTo(xg,pad.t+cH); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(pad.l,yg); ctx.lineTo(pad.l+cW,yg); ctx.stroke();
+    ctx.fillStyle=CSS.muted; ctx.font='10px Inter,sans-serif';
+    ctx.textAlign='center'; ctx.fillText(v.toFixed(2),xg,pad.t+cH+16);
+    ctx.textAlign='right'; ctx.fillText(v.toFixed(2),pad.l-6,yg+4);
+  });
+
+  // Random baseline diagonal
+  ctx.beginPath(); ctx.strokeStyle='rgba(148,163,184,0.6)';
+  ctx.lineWidth=1.5; ctx.setLineDash([4,4]);
+  ctx.moveTo(pad.l,pad.t+cH); ctx.lineTo(pad.l+cW,pad.t); ctx.stroke(); ctx.setLineDash([]);
+
+  // AUC fill
+  ctx.beginPath();
+  points.forEach((pt,i)=>{
+    const x=pad.l+pt.fpr*cW, y=pad.t+(1-pt.tpr)*cH;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.lineTo(pad.l+cW,pad.t+cH); ctx.lineTo(pad.l,pad.t+cH); ctx.closePath();
+  const fillG=ctx.createLinearGradient(0,pad.t,0,pad.t+cH);
+  fillG.addColorStop(0,'rgba(37,99,235,0.18)');
+  fillG.addColorStop(1,'rgba(37,99,235,0.03)');
+  ctx.fillStyle=fillG; ctx.fill();
+
+  // ROC line
+  ctx.beginPath(); ctx.strokeStyle=CSS.accent; ctx.lineWidth=2.5;
+  points.forEach((pt,i)=>{
+    const x=pad.l+pt.fpr*cW, y=pad.t+(1-pt.tpr)*cH;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+
+  // Axis labels
+  ctx.fillStyle=CSS.muted; ctx.font='10px Inter,sans-serif';
+  ctx.textAlign='center'; ctx.fillText('False Positive Rate (FPR)',pad.l+cW/2,H-4);
+  ctx.save(); ctx.translate(12,pad.t+cH/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText('True Positive Rate (TPR)',0,0); ctx.restore();
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+//  Metrics API
+// ══════════════════════════════════════════════════════════════════════════════
+const ATTACK_COLORS={
+  exfiltration:CSS.danger, dns_tunnel:CSS.purple,
+  port_scan:CSS.accent, lateral_movement:CSS.warn,
+};
+
+async function loadMetrics(){
+  try{
+    const r=await fetch('/api/metrics');
+    const m=await r.json();
+    if(!m.available) return;
+
+    document.getElementById('m-f1').textContent=fmt(m.f1);
+    document.getElementById('m-prec').textContent=fmt(m.precision);
+    document.getElementById('m-rec').textContent=fmt(m.recall);
+    document.getElementById('m-auc').textContent=fmt(m.roc_auc);
+    document.getElementById('m-acc').textContent=fmt(m.accuracy);
+
+    const aucBadge=document.getElementById('auc-badge');
+    if(aucBadge) aucBadge.textContent=`AUC = ${fmt(m.roc_auc)}`;
+
+    if(m.per_attack){
+      const area=document.getElementById('per-attack-area');
+      area.innerHTML=Object.entries(m.per_attack).map(([k,v])=>{
+        const pct=Math.round((v.rate||0)*100);
+        const col=ATTACK_COLORS[k]||CSS.accent;
+        const names={exfiltration:'Veri Sızdırma',dns_tunnel:'DNS Tünelleme',
+                     port_scan:'Port Taraması',lateral_movement:'Yanal Hareket'};
+        return `<div class="attack-row">
+          <span class="attack-name">${names[k]||k}</span>
+          <div class="score-bar" style="flex:1">
+            <div class="bar"><div class="fill" style="width:${pct}%;background:${col}"></div></div>
+          </div>
+          <span class="attack-rate-val" style="color:${col}">${pct}%</span>
+          <span class="attack-count">${v.detected}/${v.n}</span>
+        </div>`;
+      }).join('');
+    }
+
+    if(m.roc_curve&&m.roc_curve.length) drawROC(m.roc_curve);
+
+    if(m.sota_comparison){
+      const tb=document.getElementById('sota-tbody');
+      tb.innerHTML=Object.entries(m.sota_comparison).map(([name,d])=>{
+        const isSent=name==='SENTINEL';
+        let f1Cell;
+        if(isSent){
+          const live=(d.f1_live||0).toFixed(3);
+          f1Cell=`<strong style="color:var(--accent)">${live}</strong> <em style="color:var(--muted);font-size:10px">(canlı)</em>`;
+        } else {
+          f1Cell=d.f1_reported!=null?d.f1_reported.toFixed(2):'—';
+        }
+        return `<tr class="${isSent?'sota-row-sentinel':''}">
+          <td><strong>${name}</strong></td>
+          <td>${d.features||'—'}</td>
+          <td>${d.method||'—'}</td>
+          <td>${d.dataset||'—'}</td>
+          <td>${f1Cell}</td>
+        </tr>`;
+      }).join('');
+    }
+  }catch(e){console.warn('Metrik yüklenemedi:',e);}
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+//  Demo
+// ══════════════════════════════════════════════════════════════════════════════
+async function startDemo(){
+  const btn=document.getElementById('demo-btn');
+  btn.disabled=true;
+  document.getElementById('demo-status').textContent='Simülasyon çalışıyor…';
+  try{
+    await fetch('/api/demo/start',{method:'POST'});
+  }catch(e){
+    document.getElementById('demo-status').textContent='Bağlantı hatası';
+    btn.disabled=false;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+//  Init & Polling
+// ══════════════════════════════════════════════════════════════════════════════
+loadMetrics();
+setInterval(loadMetrics,30000);
+
+async function pollREST(){
+  try{
+    const [stats,devices,alerts]=await Promise.all([
+      fetch('/api/stats').then(r=>r.json()),
+      fetch('/api/devices').then(r=>r.json()),
+      fetch('/api/alerts').then(r=>r.json()),
+    ]);
+    updateStats(stats);
+    updateDevices(devices);
+    updateAlerts(alerts);
+  }catch(e){}
+}
+pollREST();
+loadWindows();
+setInterval(pollREST,8000);
+setInterval(loadWindows,8000);
+
+// Redraw charts on resize
+let resizeTimer;
+window.addEventListener('resize',()=>{
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(loadWindows,200);
+});
+</script>
+</body>
+</html>
