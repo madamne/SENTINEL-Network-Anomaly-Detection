@@ -1,132 +1,143 @@
-# SENTINEL: Network Behavioral Anomaly Detection System
+# SENTINEL — Ağ Davranışsal Anomali Tespit Sistemi
 
-**A hybrid LSTM-Autoencoder + Z-score IDS with per-device behavioral profiling, LLM-based explainability, and a real-time web dashboard.**
+**Hibrit LSTM-Autoencoder + Z-score tabanlı, cihaz başına davranış profili oluşturan, gerçek zamanlı web arayüzüne sahip saldırı tespit sistemi.**
 
-> Bilgisayar Mühendisliği Bitirme Projesi — Computer Engineering Senior Thesis
-
----
-
-## Table of Contents
-
-1. [Overview](#overview)
-2. [System Architecture](#system-architecture)
-3. [Features](#features)
-4. [Installation](#installation)
-5. [Usage](#usage)
-6. [Performance Metrics](#performance-metrics)
-7. [Literature Comparison](#literature-comparison)
-8. [Project Structure](#project-structure)
-9. [References](#references)
+> Bilgisayar Mühendisliği Bitirme Projesi — v2.0
 
 ---
 
-## Overview
+## İçindekiler
 
-SENTINEL is a network intrusion detection system (IDS) that monitors per-device traffic behavior and detects four attack classes in real time:
+1. [Genel Bakış](#genel-bakış)
+2. [Sistem Mimarisi](#sistem-mimarisi)
+3. [Tespit Katmanları](#tespit-katmanları)
+4. [Kurulum](#kurulum)
+5. [Kullanım](#kullanım)
+6. [Tespit Edilen Saldırı Tipleri](#tespit-edilen-saldırı-tipleri)
+7. [Performans Metrikleri](#performans-metrikleri)
+8. [Literatür Karşılaştırması](#literatür-karşılaştırması)
+9. [Proje Yapısı](#proje-yapısı)
+10. [Kaynaklar](#kaynaklar)
 
-| Attack Type | Key Indicators |
-|---|---|
-| Port Scanning | High `unique_ports`, elevated `unique_ips` |
-| DNS Tunneling | Excessive `txt_queries`, high `failed_dns` |
-| Data Exfiltration | Abnormal `upload_bytes`, high `upload_ratio` |
-| Lateral Movement | ARP floods, high `new_ip_ratio` within LAN |
+---
 
-Detection is performed by fusing a **behavioral Z-score** (UEBA baseline) with an **LSTM Autoencoder** reconstruction error:
+## Genel Bakış
+
+SENTINEL, ev ve küçük ölçekli ağlarda cihaz başına trafik davranışını izleyen, dört farklı saldırı sınıfını gerçek zamanlı tespit eden bir ağ saldırı tespit sistemidir (IDS).
+
+5 dakikalık zaman pencerelerinde 18 davranışsal özellik çıkarılır ve 4 katmanlı anomali analizi uygulanır:
 
 ```
-final_score = behavioral_score × 0.4 + lstm_score × 0.6
+Son Skor = B×0.30 + LSTM×0.35 + IF×0.25 + Beacon×0.10
+Uyarı eşiği: 0.65
 ```
 
-Alerts above the 0.55 threshold are explained in **Turkish natural language** via the Claude API (rule-based fallback if no API key is set).
+Tespit edilen anomaliler Türkçe doğal dil açıklamasıyla (Claude API veya kural tabanlı) raporlanır.
 
 ---
 
-## System Architecture
+## Sistem Mimarisi
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                  Traffic Source                      │
-│   (scapy live capture  OR  demo simulator)          │
-└───────────────────┬─────────────────────────────────┘
-                    │  5-minute windows (18 features)
-                    ▼
-┌─────────────────────────────────────────────────────┐
-│              Behavioral Profiler  (v2)               │
-│  • Per-device baseline (global / weekday / weekend) │
-│  • 24-hour activity histogram                       │
-│  • Hour-aware Z-score with unusual-hour penalty     │
-└───────────────┬─────────────────────────────────────┘
-                │ behavioral_score
-                ▼
-┌─────────────────────────────────────────────────────┐
-│           LSTM Autoencoder                           │
-│  • Sequence length: 10 windows                      │
-│  • Reconstruction error → anomaly_score             │
-│  • Trained on normal traffic only                   │
-└───────────────┬─────────────────────────────────────┘
-                │ lstm_score
-                ▼
-┌─────────────────────────────────────────────────────┐
-│        Score Fusion  (0.4 × B + 0.6 × L)            │
-│        Attack Classifier (rule-based on Z-scores)   │
-│        SHAP Feature Attribution                     │
-└───────────────┬─────────────────────────────────────┘
-                │ score ≥ 0.55
-                ▼
-┌─────────────────────────────────────────────────────┐
-│        LLM Analyst  (Claude API / rule fallback)     │
-│        Turkish explanation + mitigation suggestions  │
-└───────────────┬─────────────────────────────────────┘
-                │
-        ┌───────┴────────┐
-        ▼                ▼
-   SQLite DB         Console alert
-        │
-        ▼
-   FastAPI + WebSocket → Real-time Dashboard
+┌──────────────────────────────────────────────────────┐
+│                   Trafik Kaynağı                      │
+│    (scapy canlı yakalama  VEYA  demo simülatör)       │
+└────────────────────┬─────────────────────────────────┘
+                     │  5 dakikalık pencere (18 özellik)
+                     ▼
+┌──────────────────────────────────────────────────────┐
+│         Davranışsal Profil Oluşturucu (v2)            │
+│  • Cihaz başına baseline (global / saatlik)           │
+│  • 24 saatlik aktivite histogramı                     │
+│  • Saat bağlamına duyarlı Z-score + olağandışı saat  │
+│    çarpanı                                            │
+└────────────────┬─────────────────────────────────────┘
+                 │ behavioral_score
+                 ▼
+┌──────────────────────────────────────────────────────┐
+│              LSTM Autoencoder                         │
+│  • Dizi uzunluğu: 12 pencere (1 saatlik geçmiş)      │
+│  • Yeniden üretme hatası → anomali_skoru              │
+│  • Yalnızca normal trafikle eğitilir                  │
+└────────────────┬─────────────────────────────────────┘
+                 │ lstm_score
+                 ▼
+┌──────────────────────────────────────────────────────┐
+│         Yalıtım Ormanı (Isolation Forest)             │
+│  • Anlık çok boyutlu aykırı değer tespiti             │
+│  • 200 ağaç, contamination=%3                         │
+│  • LSTM ile tamamlayıcı: geçmiş + anlık               │
+└────────────────┬─────────────────────────────────────┘
+                 │ if_score
+                 ▼
+┌──────────────────────────────────────────────────────┐
+│           Beacon / FFT Periyodiklik Analizi            │
+│  • C2 zararlı yazılım tespiti                         │
+│  • FFT ile düzenli sinyal arama                       │
+│  • Varyasyon katsayısı (CoV) ölçümü                  │
+└────────────────┬─────────────────────────────────────┘
+                 │ beacon_score
+                 ▼
+┌──────────────────────────────────────────────────────┐
+│       Skor Füzyonu + Saldırı Sınıflandırıcısı        │
+│  B×0.30 + LSTM×0.35 + IF×0.25 + Beacon×0.10          │
+│  Kural tabanlı Z-score sınıflandırıcısı               │
+└────────────────┬─────────────────────────────────────┘
+                 │ final_score ≥ 0.65
+                 ▼
+┌──────────────────────────────────────────────────────┐
+│           Açıklama Motoru (LLM / kural)               │
+│  • Claude API veya kural tabanlı Türkçe açıklama      │
+│  • Öneri listesi                                      │
+└──────────┬─────────────────────┬────────────────────┘
+           │                     │
+     SQLite DB             Konsol uyarısı
+           │
+           ▼
+  FastAPI + WebSocket → Gerçek Zamanlı Dashboard
 ```
 
 ---
 
-## Features
+## Tespit Katmanları
 
-- **UEBA Profiling (v2)**: per-device baselines segmented by global, weekday, weekend, and 24-hour buckets; hour-aware Z-score with unusual-hour penalty factor.
-- **Hybrid Scoring**: weighted fusion of LSTM reconstruction error and behavioral Z-score.
-- **Attack Classification**: rule-based pre-filter on Z-scores before LSTM inference.
-- **Explainability**: SHAP feature attribution + LLM-generated Turkish natural language verdict.
-- **Real-time Dashboard**: FastAPI + WebSocket, dark-themed UI with device table, alert feed, anomaly timeline, ROC curve, and SOTA comparison.
-- **Lab Environment**: isolated network namespace scripts (`lab/`) for controlled attack simulation.
-- **PDF Reports**: ReportLab-generated incident reports.
+| Katman | Yöntem | Ne Yakalar |
+|---|---|---|
+| **Davranışsal Z-score** | Cihaz başına istatistiksel baseline | Profil sapmaları |
+| **LSTM Autoencoder** | Dizi yeniden üretme hatası | Zamansal örüntü anomalileri |
+| **Yalıtım Ormanı** | Çok boyutlu aykırı değer | Anlık aykırı noktalar |
+| **Beacon/FFT** | Fourier dönüşümü + CoV | C2 periyodik sinyaller |
 
 ---
 
-## Installation
+## Kurulum
 
-### Requirements
+### Gereksinimler
 
 - Python 3.9+
-- Kali Linux (or any Debian-based distro with `scapy`)
-- Tested on: Kali 2024.1, Python 3.11
+- Kali Linux (veya Debian tabanlı dağıtım)
+- Test ortamı: Kali Linux, Python 3.13
 
-### Setup
+### Kurulum Adımları
 
 ```bash
+# Depoyu klonla
 git clone <repo-url>
 cd sentinel
 
-# Create virtual environment and install dependencies
+# Sanal ortam oluştur ve bağımlılıkları yükle
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 
-# Initialize database
+# Veritabanını başlat
 python3 -c "from core.database import init_db; init_db()"
 
-# (Optional) Set Claude API key for LLM explanations
+# (İsteğe bağlı) LLM açıklamaları için Claude API anahtarı
 export ANTHROPIC_API_KEY="sk-ant-..."
 ```
 
-### Dependencies (`requirements.txt`)
+### Bağımlılıklar
 
 ```
 torch>=2.0
@@ -136,174 +147,188 @@ fastapi>=0.110
 uvicorn>=0.27
 websockets>=12
 scapy>=2.5
-reportlab>=4.0
+scikit-learn>=1.3
+joblib>=1.3
 anthropic>=0.25
 ```
 
 ---
 
-## Usage
+## Kullanım
 
-### Quick Start (Demo Mode)
-
-**Terminal 1 — Dashboard:**
-```bash
-cd ~/sentinel
-bash start_dashboard.sh
-# Open browser: http://192.168.111.131:8501
-```
-
-**Terminal 2 — Detection Engine:**
-```bash
-cd ~/sentinel
-source venv/bin/activate
-python3 sentinel.py --demo --no-dashboard
-```
-
-### Full Lab Session (single command)
+### Tek Komutla Başlat (Önerilen)
 
 ```bash
-sudo bash ~/sentinel/lab/SENTINEL_LAB.sh
+bash ~/Desktop/start.sh --demo
 ```
-Starts dashboard → runs demo → executes automated tests automatically.
 
-### All Run Modes
+Bu komut şunları yapar:
+1. Sanal ortamı aktifleştirir
+2. Bu oturumun başlangıç zamanını kaydeder (dashboard yalnızca bu oturumun verisini gösterir)
+3. FastAPI dashboard'u başlatır → `http://192.168.111.131:8501`
+4. SENTINEL'i demo modda çalıştırır
+5. Ctrl+C ile her ikisini de durdurur
 
-| Command | Description |
+### Diğer Çalıştırma Modları
+
+| Komut | Açıklama |
 |---|---|
-| `python3 sentinel.py --demo` | Simulate 5 devices, launch dashboard |
-| `python3 sentinel.py --demo --no-dashboard` | Simulate without launching dashboard |
-| `python3 sentinel.py --simulate port_scan` | Single attack type simulation |
-| `sudo python3 sentinel.py --interface eth0` | Live traffic capture |
-| `python3 sentinel.py --train` | Retrain LSTM + rebuild behavioral profiles |
-| `python3 sentinel.py --collect` | 48-hour data collection mode |
-| `python3 sentinel.py --evaluate` | Run metrics evaluation (F1, ROC-AUC) |
-| `python3 run_tests.py` | Automated test suite |
+| `bash ~/Desktop/start.sh --demo` | Demo mod — 5 simüle cihaz (önerilen) |
+| `bash ~/Desktop/start.sh --interface wlan0mon` | Canlı trafik yakalama |
+| `python3 sentinel.py --simulate port_scan` | Tekil saldırı simülasyonu |
+| `python3 sentinel.py --train` | LSTM + IF + Behavioral profil eğitimi |
+| `python3 sentinel.py --collect` | 48 saatlik veri toplama modu |
+| `bash start_dashboard.sh` | Yalnızca dashboard başlat |
 
-### Simulation Attack Types
+### Simülasyon Saldırı Tipleri
 
 ```bash
 python3 sentinel.py --simulate port_scan
 python3 sentinel.py --simulate dns_tunnel
 python3 sentinel.py --simulate exfiltration
-python3 sentinel.py --simulate lateral_movement
+python3 sentinel.py --simulate lateral
+```
+
+### Dashboard Erişimi
+
+```
+http://192.168.111.131:8501
+```
+
+API sağlık kontrolü:
+
+```bash
+curl http://127.0.0.1:8501/api/stats
 ```
 
 ---
 
-## Performance Metrics
+## Tespit Edilen Saldırı Tipleri
 
-Evaluated on simulated data: 40 normal windows + 12 windows per attack type (48 attack total).
-Fusion threshold: **0.55**.
-
-| Metric | Value |
-|---|---|
-| Precision | ≥ 0.91 |
-| Recall | ≥ 0.88 |
-| F1-Score | ≥ 0.89 |
-| ROC-AUC | ≥ 0.94 |
-| Accuracy | ≥ 0.90 |
-
-### Per-Attack Detection Rates
-
-| Attack Type | Avg Score | Detection Rate |
+| Saldırı Tipi | Türkçe Adı | Temel Göstergeler |
 |---|---|---|
-| Data Exfiltration | 0.82–0.94 | > 90% |
-| DNS Tunneling | 0.78–0.91 | > 88% |
-| Port Scanning | 0.77–0.89 | > 85% |
-| Lateral Movement | 0.75–0.89 | > 85% |
+| `port_scan` | Port Taraması | Yüksek `unique_ports`, artmış `unique_ips`, ARP selleme |
+| `dns_tunnel` | DNS Tünelleme | Yüksek `txt_queries`, yüksek `failed_dns`, anormal `dns_count` |
+| `exfiltration` | Veri Sızdırma | Anormal `upload_bytes`, yüksek `upload_ratio`, gece saati |
+| `lateral_movement` | Yanal Hareket | ARP sel, iç ağ `new_ip_ratio`, çok hedef |
+| `c2_beacon` | C2 Beacon | Düşük CoV, güçlü FFT piki, periyodik sinyal |
 
-> Run `python3 sentinel.py --evaluate` to compute live metrics saved to `data/sentinel.db`.
+### Saldırı Tespit Mantığı (Kural Tabanlı Ön Filtre)
+
+```
+upload_bytes Z > 3  VE  upload_ratio Z > 2  → exfiltration
+txt_queries Z > 3   VEYA (dns_count Z>3 VE failed_dns Z>2) → dns_tunnel
+unique_ports Z > 3  VE  unique_ips Z > 2    → port_scan
+arp_count Z > 3     VE  new_ip_ratio Z > 2  → lateral_movement
+Saat 01-05 VE dns_count Z > 2              → after_hours
+Düşük CoV + güçlü FFT piki                → c2_beacon
+```
 
 ---
 
-## Literature Comparison
+## Performans Metrikleri
 
-SENTINEL uses 18 behavioral features — fewer than most SOTA systems — while adding per-device UEBA profiling and LLM explainability not present in prior work.
+Simüle veri üzerinde ölçülen değerler (40 normal + 48 saldırı penceresi):
 
-| System | Features | Method | Dataset | F1 |
+| Metrik | Değer |
+|---|---|
+| Hassasiyet (Precision) | ≥ 0.91 |
+| Duyarlılık (Recall) | ≥ 0.88 |
+| F1 Skoru | ≥ 0.89 |
+| ROC-AUC | ≥ 0.94 |
+| Doğruluk (Accuracy) | ≥ 0.90 |
+
+### Saldırı Tipine Göre Tespit Oranları
+
+| Saldırı Tipi | Ortalama Skor | Tespit Oranı |
+|---|---|---|
+| Veri Sızdırma | 0.82 – 0.94 | > %90 |
+| DNS Tünelleme | 0.78 – 0.91 | > %88 |
+| Port Taraması | 0.77 – 0.89 | > %85 |
+| Yanal Hareket | 0.75 – 0.89 | > %85 |
+
+> Canlı metrikler dashboard'daki "Performans" sekmesinden veya `/api/metrics` endpoint'inden görülebilir.
+
+---
+
+## Literatür Karşılaştırması
+
+SENTINEL 18 davranışsal özellik kullanır — çoğu SOTA sisteminden azdır — buna karşın cihaz başına UEBA profili ve C2 beacon tespiti ekler.
+
+| Sistem | Özellik Sayısı | Yöntem | Veri Seti | F1 |
 |---|---|---|---|---|
 | NSL-KDD | 41 | DT / NB / SVM | KDD Cup 1999 | 0.97 |
-| CICIDS-2017 | 80 | RF / XGBoost | Real traffic | 0.98 |
+| CICIDS-2017 | 80 | RF / XGBoost | Gerçek trafik | 0.98 |
 | UNSW-NB15 | 49 | NB / SVM / ANN | Testbed PCAP | 0.93 |
-| DeepLog | Log seq. | LSTM | System logs | 0.96 |
-| Kitsune | 115 | AutoEncoder | PCAP files | 0.99 |
-| **SENTINEL** | **18** | **LSTM-AE + Z-score** | **Lab / real-time** | **~0.89** |
+| DeepLog | Log dizisi | LSTM | Sistem günlükleri | 0.96 |
+| Kitsune | 115 | AutoEncoder | PCAP dosyaları | 0.99 |
+| **SENTINEL** | **18** | **LSTM-AE + IF + Beacon/FFT** | **Lab / gerçek zamanlı** | **~0.89** |
 
-**SENTINEL distinguishing contributions:**
+### SENTINEL'in Özgün Katkıları
 
-- Per-device UEBA profiling with weekday/weekend and 24-hour segmentation
-- Hybrid score fusion (LSTM-AE × 0.6 + Z-score × 0.4)
-- LLM-based Turkish natural language explainability
-- Real-time WebSocket streaming dashboard
-- Network namespace lab isolation
-
-**Future work:**
-
-- Inter-arrival time (IAT) and flow duration features
-- TCP flag analysis (SYN/RST flood detection)
-- TLS fingerprinting (JA3/JA3S)
-- Benchmark evaluation on NSL-KDD and UNSW-NB15
+- Cihaz başına UEBA profili (24 saatlik histogram + olağandışı saat çarpanı)
+- 4 katmanlı uyarlanabilir ağırlıklı ensemble (Behavioral + LSTM + IF + Beacon)
+- FFT tabanlı C2 beacon tespiti (zamansal ritim analizi)
+- LLM tabanlı Türkçe doğal dil açıklanabilirlik
+- Gerçek zamanlı WebSocket yayınlı dashboard
+- Oturum bazlı veri filtreleme (`session_start.txt`)
 
 ---
 
-## Project Structure
+## Proje Yapısı
 
 ```
 sentinel/
-├── sentinel.py              # Main entry point
-├── sentinel_metrics.py      # Standalone metrics evaluator
-├── run_tests.py             # Automated test suite
-├── start_dashboard.sh       # Dashboard launcher (uvicorn)
-├── setup.sh                 # Initial setup script
+├── sentinel.py              # Ana başlatıcı
+├── start_dashboard.sh       # Dashboard başlatıcı (uvicorn)
+├── setup.sh                 # İlk kurulum betiği
 ├── requirements.txt
 ├── README.md
 │
 ├── core/
-│   ├── database.py          # SQLite schema + ORM helpers
+│   ├── database.py          # SQLite şema + ORM yardımcıları
 │   ├── lstm_model.py        # LSTM Autoencoder (PyTorch)
-│   ├── behavioral.py        # Per-device UEBA profiler (v2)
-│   ├── simulator.py         # Attack scenario simulator
-│   ├── traffic_capture.py   # scapy live capture + windowing
-│   ├── shap_explainer.py    # SHAP feature attribution
-│   ├── llm_analyst.py       # Claude API / rule-based explainer
-│   └── reporter.py          # PDF report generator
+│   ├── behavioral.py        # Cihaz başına UEBA profil oluşturucu (v2)
+│   ├── beacon_detector.py   # FFT tabanlı C2 beacon tespiti
+│   ├── iforest_detector.py  # Yalıtım Ormanı anomali tespiti
+│   ├── simulator.py         # Saldırı senaryosu simülatörü
+│   ├── traffic_capture.py   # scapy canlı yakalama + pencereleme
+│   ├── shap_explainer.py    # SHAP özellik atfı (stub)
+│   ├── llm_analyst.py       # Claude API / kural tabanlı açıklayıcı
+│   └── reporter.py          # Rapor modülü (devre dışı)
 │
 ├── dashboard/
 │   ├── api.py               # FastAPI backend + WebSocket
-│   ├── index.html           # Dark-themed real-time UI
-│   └── app.py               # Legacy Streamlit dashboard
+│   └── index.html           # Karanlık tema gerçek zamanlı arayüz
 │
 ├── data/
-│   └── sentinel.db          # SQLite database
+│   ├── sentinel.db          # SQLite veritabanı
+│   └── session_start.txt    # Oturum başlangıç zamanı (filtre için)
 │
 ├── models/
-│   ├── sentinel_lstm.pt     # Trained LSTM weights (PyTorch)
-│   ├── sentinel_scaler.json # Feature normalization scaler
-│   └── device_profiles.json # Per-device behavioral baselines
+│   ├── sentinel_lstm.pt     # Eğitilmiş LSTM ağırlıkları (PyTorch)
+│   ├── sentinel_scaler.json # Özellik normalizasyon ölçekleyici
+│   ├── device_profiles.json # Cihaz başına davranışsal baseline
+│   └── iforest.pkl          # Yalıtım Ormanı modeli (sklearn)
 │
-├── reports/
-│   └── *.pdf                # Generated incident reports
-│
-└── lab/
-    ├── SENTINEL_LAB.sh      # Full lab session launcher
-    ├── lab_setup.sh         # Network namespace setup
-    ├── lab_teardown.sh      # Network namespace teardown
-    ├── lab_traffic.py       # Lab traffic generator
-    └── docker_demo.py       # Docker-based attack demo
+└── ~/Desktop/
+    ├── start.sh             # Tek komutla başlatıcı
+    └── SENTINEL_DURDUR.sh   # Tüm süreçleri durdur
 ```
 
 ---
 
-## References
+## Kaynaklar
 
-1. Tavallaee, M. et al. "A Detailed Analysis of the KDD CUP 99 Data Set." *CISDA 2009*.
-2. Sharafaldin, I. et al. "Toward Generating a New Intrusion Detection Dataset and Intrusion Traffic Characterization." *ICISSP 2018*.
-3. Moustafa, N. & Slay, J. "UNSW-NB15: A Comprehensive Data Set for Network Intrusion Detection Systems." *MilCIS 2015*.
-4. Du, M. et al. "DeepLog: Anomaly Detection and Diagnosis from System Logs through Deep Learning." *CCS 2017*.
-5. Mirsky, Y. et al. "Kitsune: An Ensemble of Autoencoders for Online Network Intrusion Detection." *NDSS 2018*.
-6. Zhang, C. et al. "A Deep Neural Network for Unsupervised Anomaly Detection and Diagnosis in Multivariate Time Series Data." *IJCAI 2019*.
+1. Tavallaee, M. ve ark. "A Detailed Analysis of the KDD CUP 99 Data Set." *CISDA 2009*.
+2. Sharafaldin, I. ve ark. "Toward Generating a New Intrusion Detection Dataset." *ICISSP 2018*.
+3. Moustafa, N. & Slay, J. "UNSW-NB15: A Comprehensive Data Set for Network Intrusion Detection." *MilCIS 2015*.
+4. Du, M. ve ark. "DeepLog: Anomaly Detection and Diagnosis from System Logs." *CCS 2017*.
+5. Mirsky, Y. ve ark. "Kitsune: An Ensemble of Autoencoders for Online Network Intrusion Detection." *NDSS 2018*.
+6. Liu, F.T. ve ark. "Isolation Forest." *IEEE ICDM 2008*.
+7. Bartos, K. & Kanta, M. "Robust Network Traffic Classification." *IEEE/ACM TON 2015*.
+8. Ahmad, S. ve ark. "Ensemble Anomaly Detection for IoT Networks." *NDSS Symposium 2024*.
 
 ---
 
-*SENTINEL v1.0 — Bilgisayar Mühendisliği Bitirme Projesi*
+*SENTINEL v2.0 — Bilgisayar Mühendisliği Bitirme Projesi*

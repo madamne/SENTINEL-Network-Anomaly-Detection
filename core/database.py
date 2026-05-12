@@ -1,5 +1,5 @@
 """
-SENTINEL - Database Manager
+SENTINEL - Veritabanı Yöneticisi
 """
 
 import json
