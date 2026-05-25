@@ -200,7 +200,7 @@ def main():
         ai_baslat()
         lstm.train(epochs=30)
         iforest.egit()
-        profiler.build_profiles(min_windows=20)
+        profiler.build_profiles(min_windows=10)
         print("[SENTINEL] ✓ Tüm modeller eğitildi (LSTM + IF + Behavioral)")
         return
 
@@ -270,6 +270,9 @@ if __name__ == "__main__":
     main()
 
 # run_tests.py uyumluluğu için kısayol isimler
-ALERT_THRESHOLD = UYARI_ESIGI
-init_ai = ai_baslat
-on_window = pencere_isle
+# ── run_tests.py uyumluluk alias'lari ────────────────────────────────────────
+# run_tests.py bu isimlerle import eder; fonksiyon isimleri degistirilmeden
+# uyumluluk saglanir. Yeni kod icin dogrudan ai_baslat/pencere_isle kullanin.
+ALERT_THRESHOLD = UYARI_ESIGI   # = 0.65
+init_ai = ai_baslat              # AI modellerini yukler
+on_window = pencere_isle         # Her trafik penceresi icin islem yapar

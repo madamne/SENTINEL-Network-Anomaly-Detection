@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 /home/kali/sentinel/sentinel.py --help)",
+      "Read(//home/kali/Desktop/**)",
+      "Bash(chmod +x /home/kali/Desktop/EV_TESTI.sh)",
+      "Bash(bash /home/kali/Desktop/EV_TESTI.sh --dry-run)"
+    ],
+    "additionalDirectories": [
+      "/home/kali/Desktop"
+    ]
+  }
+}

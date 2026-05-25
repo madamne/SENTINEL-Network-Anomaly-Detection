@@ -96,12 +96,12 @@ class YalitimOrmani:
         print("[IF] Eğitim verisi çekiliyor...")
         df = get_windows_df(limit=50000)
 
-        if df.empty or len(df) < 50:
+        if df.empty or len(df) < 10:
             print("[IF] Yetersiz veri.")
             return
 
         normal = df[df["attack_type"] == "normal"].copy()
-        if len(normal) < 20:
+        if len(normal) < 10:
             normal = df.copy()
 
         print(f"[IF] {len(normal)} normal pencere ile Yalıtım Ormanı eğitiliyor...")

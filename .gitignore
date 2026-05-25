@@ -4,32 +4,42 @@ __pycache__/
 *.pyo
 *.pyd
 .Python
+*.egg
 *.egg-info/
 dist/
 build/
-
-# Virtual environment
+.eggs/
 venv/
 .venv/
 env/
 
-# Trained model weights & scaler (large binaries)
+# SENTINEL veri dosyalari
+data/sentinel.db
+data/*.db-journal
+data/sentinel_live.log
+data/session_start.txt
+data/ev_testi_*/
+data/nmap_*.txt
+data/*.log
+
+# Model dosyalari (git-lfs ile yonetilmeli)
 models/sentinel_lstm.pt
 models/iforest.pkl
+models/sentinel_scaler.json
+models/device_profiles.json
 
-# Database
-data/sentinel.db
-
-# Generated reports
-reports/*.pdf
-
-# Secrets baseline
-.secrets.baseline
-
-# IDE / tooling
+# IDE
 .vscode/
-.claude/
+.idea/
 *.swp
 *.swo
+*~
+
+# OS
 .DS_Store
 Thumbs.db
+
+# Gecici dosyalar
+reports/
+*.pdf
+*.tmp

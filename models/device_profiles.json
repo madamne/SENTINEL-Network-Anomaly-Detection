@@ -1,43 +1,43 @@
 {
   "aa:bb:cc:11:22:33": {
     "mac": "aa:bb:cc:11:22:33",
-    "window_count": 81,
-    "built_at": 1778488883.1759405,
+    "window_count": 11,
+    "built_at": 1779131615.8282602,
     "global": {
       "hour": {
-        "mean": 8.0,
-        "std": 0.8,
-        "min": 8.0,
-        "max": 8.0,
-        "p95": 8.0
+        "mean": 15.0,
+        "std": 1.5,
+        "min": 15.0,
+        "max": 15.0,
+        "p95": 15.0
       },
       "is_weekend": {
-        "mean": 1.0,
-        "std": 0.1,
-        "min": 1.0,
-        "max": 1.0,
-        "p95": 1.0
+        "mean": 0.0,
+        "std": 0.01,
+        "min": 0.0,
+        "max": 0.0,
+        "p95": 0.0
       },
       "dns_count": {
-        "mean": 17.8148,
-        "std": 7.6805,
+        "mean": 15.4545,
+        "std": 8.1393,
         "min": 5.0,
         "max": 30.0,
-        "p95": 29.0
+        "p95": 27.5
       },
       "unique_domains": {
-        "mean": 8.9136,
-        "std": 3.263,
+        "mean": 10.0909,
+        "std": 3.4498,
         "min": 3.0,
-        "max": 15.0,
+        "max": 14.0,
         "p95": 14.0
       },
       "external_ratio": {
-        "mean": 0.7544,
-        "std": 0.0839,
-        "min": 0.61,
-        "max": 0.899,
-        "p95": 0.876
+        "mean": 0.7795,
+        "std": 0.0566,
+        "min": 0.675,
+        "max": 0.871,
+        "p95": 0.8605
       },
       "txt_queries": {
         "mean": 0.0,
@@ -47,304 +47,175 @@
         "p95": 0.0
       },
       "failed_dns": {
-        "mean": 0.9753,
-        "std": 0.8161,
+        "mean": 1.1818,
+        "std": 0.7158,
         "min": 0.0,
         "max": 2.0,
         "p95": 2.0
       },
       "upload_bytes": {
-        "mean": 278262.5185,
-        "std": 139653.0134,
-        "min": 11264.0,
-        "max": 510976.0,
-        "p95": 489472.0
+        "mean": 282065.4545,
+        "std": 127455.8356,
+        "min": 66560.0,
+        "max": 499712.0,
+        "p95": 477184.0
       },
       "download_bytes": {
-        "mean": 2619328.7901,
-        "std": 1520981.3788,
-        "min": 114688.0,
-        "max": 5074944.0,
-        "p95": 4791296.0
+        "mean": 2075089.4545,
+        "std": 1274999.5443,
+        "min": 330752.0,
+        "max": 4827136.0,
+        "p95": 4407808.0
       },
       "upload_ratio": {
-        "mean": 0.1467,
-        "std": 0.0614,
-        "min": 0.051,
+        "mean": 0.149,
+        "std": 0.0725,
+        "min": 0.061,
         "max": 0.249,
-        "p95": 0.241
+        "p95": 0.2415
       },
       "avg_packet_size": {
-        "mean": 480.8617,
-        "std": 162.4699,
-        "min": 205.7,
-        "max": 785.9,
-        "p95": 760.3
+        "mean": 412.3455,
+        "std": 183.1503,
+        "min": 230.4,
+        "max": 769.6,
+        "p95": 725.35
       },
       "unique_ips": {
-        "mean": 5.4074,
-        "std": 2.5472,
+        "mean": 6.0,
+        "std": 3.4378,
         "min": 2.0,
         "max": 10.0,
         "p95": 10.0
       },
       "new_ip_ratio": {
-        "mean": 0.0953,
-        "std": 0.0554,
-        "min": 0.002,
-        "max": 0.191,
-        "p95": 0.175
+        "mean": 0.1134,
+        "std": 0.0602,
+        "min": 0.022,
+        "max": 0.198,
+        "p95": 0.1925
       },
       "unique_ports": {
-        "mean": 4.5062,
-        "std": 1.9946,
+        "mean": 4.6364,
+        "std": 1.9199,
         "min": 2.0,
-        "max": 8.0,
-        "p95": 8.0
+        "max": 7.0,
+        "p95": 7.0
       },
       "high_ports": {
-        "mean": 1.5926,
-        "std": 0.9785,
+        "mean": 1.5455,
+        "std": 1.0757,
         "min": 0.0,
         "max": 3.0,
         "p95": 3.0
       },
       "http_count": {
-        "mean": 2.4815,
-        "std": 1.6338,
+        "mean": 2.0909,
+        "std": 1.5048,
         "min": 0.0,
-        "max": 5.0,
-        "p95": 5.0
+        "max": 4.0,
+        "p95": 4.0
       },
       "https_count": {
-        "mean": 24.5556,
-        "std": 9.4764,
-        "min": 7.0,
-        "max": 40.0,
-        "p95": 39.0
-      },
-      "arp_count": {
-        "mean": 1.6667,
-        "std": 1.0887,
-        "min": 0.0,
-        "max": 3.0,
-        "p95": 3.0
-      }
-    },
-    "weekday": {},
-    "weekend": {
-      "hour": {
-        "mean": 8.0,
-        "std": 0.8,
-        "min": 8.0,
-        "max": 8.0,
-        "p95": 8.0
-      },
-      "is_weekend": {
-        "mean": 1.0,
-        "std": 0.1,
-        "min": 1.0,
-        "max": 1.0,
-        "p95": 1.0
-      },
-      "dns_count": {
-        "mean": 17.8148,
-        "std": 7.6805,
+        "mean": 15.6364,
+        "std": 9.1976,
         "min": 5.0,
-        "max": 30.0,
-        "p95": 29.0
-      },
-      "unique_domains": {
-        "mean": 8.9136,
-        "std": 3.263,
-        "min": 3.0,
-        "max": 15.0,
-        "p95": 14.0
-      },
-      "external_ratio": {
-        "mean": 0.7544,
-        "std": 0.0839,
-        "min": 0.61,
-        "max": 0.899,
-        "p95": 0.876
-      },
-      "txt_queries": {
-        "mean": 0.0,
-        "std": 0.01,
-        "min": 0.0,
-        "max": 0.0,
-        "p95": 0.0
-      },
-      "failed_dns": {
-        "mean": 0.9753,
-        "std": 0.8161,
-        "min": 0.0,
-        "max": 2.0,
-        "p95": 2.0
-      },
-      "upload_bytes": {
-        "mean": 278262.5185,
-        "std": 139653.0134,
-        "min": 11264.0,
-        "max": 510976.0,
-        "p95": 489472.0
-      },
-      "download_bytes": {
-        "mean": 2619328.7901,
-        "std": 1520981.3788,
-        "min": 114688.0,
-        "max": 5074944.0,
-        "p95": 4791296.0
-      },
-      "upload_ratio": {
-        "mean": 0.1467,
-        "std": 0.0614,
-        "min": 0.051,
-        "max": 0.249,
-        "p95": 0.241
-      },
-      "avg_packet_size": {
-        "mean": 480.8617,
-        "std": 162.4699,
-        "min": 205.7,
-        "max": 785.9,
-        "p95": 760.3
-      },
-      "unique_ips": {
-        "mean": 5.4074,
-        "std": 2.5472,
-        "min": 2.0,
-        "max": 10.0,
-        "p95": 10.0
-      },
-      "new_ip_ratio": {
-        "mean": 0.0953,
-        "std": 0.0554,
-        "min": 0.002,
-        "max": 0.191,
-        "p95": 0.175
-      },
-      "unique_ports": {
-        "mean": 4.5062,
-        "std": 1.9946,
-        "min": 2.0,
-        "max": 8.0,
-        "p95": 8.0
-      },
-      "high_ports": {
-        "mean": 1.5926,
-        "std": 0.9785,
-        "min": 0.0,
-        "max": 3.0,
-        "p95": 3.0
-      },
-      "http_count": {
-        "mean": 2.4815,
-        "std": 1.6338,
-        "min": 0.0,
-        "max": 5.0,
-        "p95": 5.0
-      },
-      "https_count": {
-        "mean": 24.5556,
-        "std": 9.4764,
-        "min": 7.0,
-        "max": 40.0,
-        "p95": 39.0
+        "max": 33.0,
+        "p95": 31.0
       },
       "arp_count": {
-        "mean": 1.6667,
-        "std": 1.0887,
+        "mean": 1.4545,
+        "std": 1.1571,
         "min": 0.0,
         "max": 3.0,
         "p95": 3.0
       }
     },
     "hourly": {
-      "8": {
-        "is_weekend": 1.0,
-        "dns_count": 17.8148,
-        "unique_domains": 8.9136,
-        "external_ratio": 0.7544,
+      "15": {
+        "is_weekend": 0.0,
+        "dns_count": 15.4545,
+        "unique_domains": 10.0909,
+        "external_ratio": 0.7795,
         "txt_queries": 0.0,
-        "failed_dns": 0.9753,
-        "upload_bytes": 278262.5185,
-        "download_bytes": 2619328.7901,
-        "upload_ratio": 0.1467,
-        "avg_packet_size": 480.8617,
-        "unique_ips": 5.4074,
-        "new_ip_ratio": 0.0953,
-        "unique_ports": 4.5062,
-        "high_ports": 1.5926,
-        "http_count": 2.4815,
-        "https_count": 24.5556,
-        "arp_count": 1.6667
+        "failed_dns": 1.1818,
+        "upload_bytes": 282065.4545,
+        "download_bytes": 2075089.4545,
+        "upload_ratio": 0.149,
+        "avg_packet_size": 412.3455,
+        "unique_ips": 6.0,
+        "new_ip_ratio": 0.1134,
+        "unique_ports": 4.6364,
+        "high_ports": 1.5455,
+        "http_count": 2.0909,
+        "https_count": 15.6364,
+        "arp_count": 1.4545
       }
     },
     "hour_std": {
-      "8": {
-        "is_weekend": 0.05,
-        "dns_count": 7.6805,
-        "unique_domains": 3.263,
-        "external_ratio": 0.0839,
+      "15": {
+        "is_weekend": 0.01,
+        "dns_count": 8.1393,
+        "unique_domains": 3.4498,
+        "external_ratio": 0.0566,
         "txt_queries": 0.01,
-        "failed_dns": 0.8161,
-        "upload_bytes": 139653.0134,
-        "download_bytes": 1520981.3788,
-        "upload_ratio": 0.0614,
-        "avg_packet_size": 162.4699,
-        "unique_ips": 2.5472,
-        "new_ip_ratio": 0.0554,
-        "unique_ports": 1.9946,
-        "high_ports": 0.9785,
-        "http_count": 1.6338,
-        "https_count": 9.4764,
-        "arp_count": 1.0887
+        "failed_dns": 0.7158,
+        "upload_bytes": 127455.8356,
+        "download_bytes": 1274999.5443,
+        "upload_ratio": 0.0725,
+        "avg_packet_size": 183.1503,
+        "unique_ips": 3.4378,
+        "new_ip_ratio": 0.0602,
+        "unique_ports": 1.9199,
+        "high_ports": 1.0757,
+        "http_count": 1.5048,
+        "https_count": 9.1976,
+        "arp_count": 1.1571
       }
     },
     "active_hours": {
-      "8": 81
+      "15": 11
     }
   },
   "aa:11:bb:22:cc:33": {
     "mac": "aa:11:bb:22:cc:33",
-    "window_count": 54,
-    "built_at": 1778488883.119782,
+    "window_count": 7,
+    "built_at": 1779131615.7959821,
     "global": {
       "hour": {
-        "mean": 8.0,
-        "std": 0.8,
-        "min": 8.0,
-        "max": 8.0,
-        "p95": 8.0
-      },
-      "is_weekend": {
-        "mean": 1.0,
-        "std": 0.1,
-        "min": 1.0,
-        "max": 1.0,
-        "p95": 1.0
-      },
-      "dns_count": {
-        "mean": 17.8704,
-        "std": 7.8246,
-        "min": 6.0,
-        "max": 30.0,
-        "p95": 29.35
-      },
-      "unique_domains": {
-        "mean": 8.5741,
-        "std": 4.0852,
-        "min": 3.0,
+        "mean": 15.0,
+        "std": 1.5,
+        "min": 15.0,
         "max": 15.0,
         "p95": 15.0
       },
+      "is_weekend": {
+        "mean": 0.0,
+        "std": 0.01,
+        "min": 0.0,
+        "max": 0.0,
+        "p95": 0.0
+      },
+      "dns_count": {
+        "mean": 21.7143,
+        "std": 6.4523,
+        "min": 9.0,
+        "max": 28.0,
+        "p95": 28.0
+      },
+      "unique_domains": {
+        "mean": 9.5714,
+        "std": 2.9207,
+        "min": 5.0,
+        "max": 15.0,
+        "p95": 13.8
+      },
       "external_ratio": {
-        "mean": 0.7569,
-        "std": 0.0842,
-        "min": 0.615,
-        "max": 0.898,
-        "p95": 0.8724
+        "mean": 0.7619,
+        "std": 0.1062,
+        "min": 0.637,
+        "max": 0.893,
+        "p95": 0.8903
       },
       "txt_queries": {
         "mean": 0.0,
@@ -354,305 +225,179 @@
         "p95": 0.0
       },
       "failed_dns": {
-        "mean": 0.9444,
-        "std": 0.848,
+        "mean": 0.7143,
+        "std": 0.8806,
         "min": 0.0,
         "max": 2.0,
         "p95": 2.0
       },
       "upload_bytes": {
-        "mean": 249874.963,
-        "std": 146883.6948,
-        "min": 14336.0,
-        "max": 512000.0,
-        "p95": 470425.6
+        "mean": 245906.2857,
+        "std": 170654.5594,
+        "min": 43008.0,
+        "max": 495616.0,
+        "p95": 481792.0
       },
       "download_bytes": {
-        "mean": 2341963.8519,
-        "std": 1337810.3532,
-        "min": 284672.0,
-        "max": 5108736.0,
-        "p95": 4624179.2
+        "mean": 2713307.4286,
+        "std": 1241282.5151,
+        "min": 717824.0,
+        "max": 4349952.0,
+        "p95": 4261171.2
       },
       "upload_ratio": {
-        "mean": 0.1383,
-        "std": 0.058,
-        "min": 0.053,
-        "max": 0.242,
-        "p95": 0.2383
+        "mean": 0.0983,
+        "std": 0.0296,
+        "min": 0.069,
+        "max": 0.146,
+        "p95": 0.1442
       },
       "avg_packet_size": {
-        "mean": 490.137,
-        "std": 175.0795,
-        "min": 207.6,
-        "max": 796.9,
-        "p95": 784.515
+        "mean": 516.4,
+        "std": 200.2558,
+        "min": 219.4,
+        "max": 794.9,
+        "p95": 768.59
       },
       "unique_ips": {
-        "mean": 6.0,
-        "std": 2.4419,
-        "min": 2.0,
-        "max": 10.0,
-        "p95": 10.0
-      },
-      "new_ip_ratio": {
-        "mean": 0.0839,
-        "std": 0.056,
-        "min": 0.002,
-        "max": 0.194,
-        "p95": 0.1777
-      },
-      "unique_ports": {
-        "mean": 5.0185,
-        "std": 2.0771,
-        "min": 2.0,
-        "max": 8.0,
-        "p95": 8.0
-      },
-      "high_ports": {
-        "mean": 1.5,
-        "std": 1.0672,
-        "min": 0.0,
-        "max": 3.0,
-        "p95": 3.0
-      },
-      "http_count": {
-        "mean": 2.0926,
-        "std": 1.5901,
-        "min": 0.0,
-        "max": 5.0,
-        "p95": 5.0
-      },
-      "https_count": {
-        "mean": 24.037,
-        "std": 11.0268,
-        "min": 5.0,
-        "max": 40.0,
-        "p95": 40.0
-      },
-      "arp_count": {
-        "mean": 1.463,
-        "std": 1.1974,
-        "min": 0.0,
-        "max": 3.0,
-        "p95": 3.0
-      }
-    },
-    "weekday": {},
-    "weekend": {
-      "hour": {
-        "mean": 8.0,
-        "std": 0.8,
-        "min": 8.0,
-        "max": 8.0,
-        "p95": 8.0
-      },
-      "is_weekend": {
-        "mean": 1.0,
-        "std": 0.1,
-        "min": 1.0,
-        "max": 1.0,
-        "p95": 1.0
-      },
-      "dns_count": {
-        "mean": 17.8704,
-        "std": 7.8246,
-        "min": 6.0,
-        "max": 30.0,
-        "p95": 29.35
-      },
-      "unique_domains": {
-        "mean": 8.5741,
-        "std": 4.0852,
+        "mean": 5.7143,
+        "std": 1.8295,
         "min": 3.0,
-        "max": 15.0,
-        "p95": 15.0
-      },
-      "external_ratio": {
-        "mean": 0.7569,
-        "std": 0.0842,
-        "min": 0.615,
-        "max": 0.898,
-        "p95": 0.8724
-      },
-      "txt_queries": {
-        "mean": 0.0,
-        "std": 0.01,
-        "min": 0.0,
-        "max": 0.0,
-        "p95": 0.0
-      },
-      "failed_dns": {
-        "mean": 0.9444,
-        "std": 0.848,
-        "min": 0.0,
-        "max": 2.0,
-        "p95": 2.0
-      },
-      "upload_bytes": {
-        "mean": 249874.963,
-        "std": 146883.6948,
-        "min": 14336.0,
-        "max": 512000.0,
-        "p95": 470425.6
-      },
-      "download_bytes": {
-        "mean": 2341963.8519,
-        "std": 1337810.3532,
-        "min": 284672.0,
-        "max": 5108736.0,
-        "p95": 4624179.2
-      },
-      "upload_ratio": {
-        "mean": 0.1383,
-        "std": 0.058,
-        "min": 0.053,
-        "max": 0.242,
-        "p95": 0.2383
-      },
-      "avg_packet_size": {
-        "mean": 490.137,
-        "std": 175.0795,
-        "min": 207.6,
-        "max": 796.9,
-        "p95": 784.515
-      },
-      "unique_ips": {
-        "mean": 6.0,
-        "std": 2.4419,
-        "min": 2.0,
-        "max": 10.0,
-        "p95": 10.0
+        "max": 9.0,
+        "p95": 8.4
       },
       "new_ip_ratio": {
-        "mean": 0.0839,
-        "std": 0.056,
-        "min": 0.002,
-        "max": 0.194,
-        "p95": 0.1777
+        "mean": 0.1206,
+        "std": 0.0562,
+        "min": 0.005,
+        "max": 0.179,
+        "p95": 0.1763
       },
       "unique_ports": {
-        "mean": 5.0185,
-        "std": 2.0771,
-        "min": 2.0,
+        "mean": 6.2857,
+        "std": 1.5779,
+        "min": 3.0,
         "max": 8.0,
-        "p95": 8.0
+        "p95": 7.7
       },
       "high_ports": {
-        "mean": 1.5,
-        "std": 1.0672,
+        "mean": 1.2857,
+        "std": 1.0302,
         "min": 0.0,
         "max": 3.0,
-        "p95": 3.0
+        "p95": 2.7
       },
       "http_count": {
-        "mean": 2.0926,
-        "std": 1.5901,
+        "mean": 3.1429,
+        "std": 1.4569,
         "min": 0.0,
         "max": 5.0,
-        "p95": 5.0
+        "p95": 4.7
       },
       "https_count": {
-        "mean": 24.037,
-        "std": 11.0268,
+        "mean": 20.2857,
+        "std": 11.5723,
         "min": 5.0,
         "max": 40.0,
-        "p95": 40.0
+        "p95": 38.2
       },
       "arp_count": {
-        "mean": 1.463,
-        "std": 1.1974,
+        "mean": 1.7143,
+        "std": 1.0302,
         "min": 0.0,
         "max": 3.0,
         "p95": 3.0
       }
     },
     "hourly": {
-      "8": {
-        "is_weekend": 1.0,
-        "dns_count": 17.8704,
-        "unique_domains": 8.5741,
-        "external_ratio": 0.7569,
+      "15": {
+        "is_weekend": 0.0,
+        "dns_count": 21.7143,
+        "unique_domains": 9.5714,
+        "external_ratio": 0.7619,
         "txt_queries": 0.0,
-        "failed_dns": 0.9444,
-        "upload_bytes": 249874.963,
-        "download_bytes": 2341963.8519,
-        "upload_ratio": 0.1383,
-        "avg_packet_size": 490.137,
-        "unique_ips": 6.0,
-        "new_ip_ratio": 0.0839,
-        "unique_ports": 5.0185,
-        "high_ports": 1.5,
-        "http_count": 2.0926,
-        "https_count": 24.037,
-        "arp_count": 1.463
+        "failed_dns": 0.7143,
+        "upload_bytes": 245906.2857,
+        "download_bytes": 2713307.4286,
+        "upload_ratio": 0.0983,
+        "avg_packet_size": 516.4,
+        "unique_ips": 5.7143,
+        "new_ip_ratio": 0.1206,
+        "unique_ports": 6.2857,
+        "high_ports": 1.2857,
+        "http_count": 3.1429,
+        "https_count": 20.2857,
+        "arp_count": 1.7143
       }
     },
     "hour_std": {
-      "8": {
-        "is_weekend": 0.05,
-        "dns_count": 7.8246,
-        "unique_domains": 4.0852,
-        "external_ratio": 0.0842,
+      "15": {
+        "is_weekend": 0.01,
+        "dns_count": 6.4523,
+        "unique_domains": 2.9207,
+        "external_ratio": 0.1062,
         "txt_queries": 0.01,
-        "failed_dns": 0.848,
-        "upload_bytes": 146883.6948,
-        "download_bytes": 1337810.3532,
-        "upload_ratio": 0.058,
-        "avg_packet_size": 175.0795,
-        "unique_ips": 2.4419,
-        "new_ip_ratio": 0.056,
-        "unique_ports": 2.0771,
-        "high_ports": 1.0672,
-        "http_count": 1.5901,
-        "https_count": 11.0268,
-        "arp_count": 1.1974
+        "failed_dns": 0.8806,
+        "upload_bytes": 170654.5594,
+        "download_bytes": 1241282.5151,
+        "upload_ratio": 0.0296,
+        "avg_packet_size": 200.2558,
+        "unique_ips": 1.8295,
+        "new_ip_ratio": 0.0562,
+        "unique_ports": 1.5779,
+        "high_ports": 1.0302,
+        "http_count": 1.4569,
+        "https_count": 11.5723,
+        "arp_count": 1.0302
       }
     },
     "active_hours": {
-      "8": 81,
-      "4": 32
+      "15": 56,
+      "4": 6,
+      "2": 5,
+      "3": 3,
+      "1": 1
     }
   },
   "ff:ee:dd:cc:bb:aa": {
     "mac": "ff:ee:dd:cc:bb:aa",
-    "window_count": 81,
-    "built_at": 1778488883.1364915,
+    "window_count": 11,
+    "built_at": 1779131615.8047905,
     "global": {
       "hour": {
-        "mean": 8.0,
-        "std": 0.8,
-        "min": 8.0,
-        "max": 8.0,
-        "p95": 8.0
+        "mean": 15.0,
+        "std": 1.5,
+        "min": 15.0,
+        "max": 15.0,
+        "p95": 15.0
       },
       "is_weekend": {
-        "mean": 1.0,
-        "std": 0.1,
-        "min": 1.0,
-        "max": 1.0,
-        "p95": 1.0
+        "mean": 0.0,
+        "std": 0.01,
+        "min": 0.0,
+        "max": 0.0,
+        "p95": 0.0
       },
       "dns_count": {
-        "mean": 17.6296,
-        "std": 8.1369,
+        "mean": 16.4545,
+        "std": 8.7943,
         "min": 5.0,
         "max": 30.0,
-        "p95": 28.0
+        "p95": 29.5
       },
       "unique_domains": {
-        "mean": 8.4198,
-        "std": 3.8164,
+        "mean": 6.6364,
+        "std": 3.0233,
         "min": 3.0,
-        "max": 15.0,
-        "p95": 14.0
+        "max": 12.0,
+        "p95": 11.0
       },
       "external_ratio": {
-        "mean": 0.7557,
-        "std": 0.0821,
-        "min": 0.604,
-        "max": 0.899,
-        "p95": 0.886
+        "mean": 0.745,
+        "std": 0.0936,
+        "min": 0.625,
+        "max": 0.89,
+        "p95": 0.8795
       },
       "txt_queries": {
         "mean": 0.0,
@@ -662,304 +407,175 @@
         "p95": 0.0
       },
       "failed_dns": {
-        "mean": 0.8642,
-        "std": 0.8278,
-        "min": 0.0,
-        "max": 2.0,
-        "p95": 2.0
-      },
-      "upload_bytes": {
-        "mean": 271549.6296,
-        "std": 156977.3087,
-        "min": 12288.0,
-        "max": 512000.0,
-        "p95": 496640.0
-      },
-      "download_bytes": {
-        "mean": 2509609.0864,
-        "std": 1394821.8734,
-        "min": 264192.0,
-        "max": 4919296.0,
-        "p95": 4779008.0
-      },
-      "upload_ratio": {
-        "mean": 0.1425,
-        "std": 0.0547,
-        "min": 0.051,
-        "max": 0.248,
-        "p95": 0.235
-      },
-      "avg_packet_size": {
-        "mean": 495.0049,
-        "std": 186.6212,
-        "min": 202.5,
-        "max": 798.3,
-        "p95": 772.6
-      },
-      "unique_ips": {
-        "mean": 5.8765,
-        "std": 2.338,
-        "min": 2.0,
-        "max": 10.0,
-        "p95": 10.0
-      },
-      "new_ip_ratio": {
-        "mean": 0.0969,
-        "std": 0.0552,
-        "min": 0.0,
-        "max": 0.195,
-        "p95": 0.183
-      },
-      "unique_ports": {
-        "mean": 5.0617,
-        "std": 2.1277,
-        "min": 2.0,
-        "max": 8.0,
-        "p95": 8.0
-      },
-      "high_ports": {
-        "mean": 1.2593,
-        "std": 1.0974,
-        "min": 0.0,
-        "max": 3.0,
-        "p95": 3.0
-      },
-      "http_count": {
-        "mean": 2.2593,
-        "std": 1.7693,
-        "min": 0.0,
-        "max": 5.0,
-        "p95": 5.0
-      },
-      "https_count": {
-        "mean": 22.3086,
-        "std": 9.8277,
-        "min": 5.0,
-        "max": 40.0,
-        "p95": 39.0
-      },
-      "arp_count": {
-        "mean": 1.2222,
-        "std": 1.1111,
-        "min": 0.0,
-        "max": 3.0,
-        "p95": 3.0
-      }
-    },
-    "weekday": {},
-    "weekend": {
-      "hour": {
-        "mean": 8.0,
-        "std": 0.8,
-        "min": 8.0,
-        "max": 8.0,
-        "p95": 8.0
-      },
-      "is_weekend": {
         "mean": 1.0,
-        "std": 0.1,
-        "min": 1.0,
-        "max": 1.0,
-        "p95": 1.0
-      },
-      "dns_count": {
-        "mean": 17.6296,
-        "std": 8.1369,
-        "min": 5.0,
-        "max": 30.0,
-        "p95": 28.0
-      },
-      "unique_domains": {
-        "mean": 8.4198,
-        "std": 3.8164,
-        "min": 3.0,
-        "max": 15.0,
-        "p95": 14.0
-      },
-      "external_ratio": {
-        "mean": 0.7557,
-        "std": 0.0821,
-        "min": 0.604,
-        "max": 0.899,
-        "p95": 0.886
-      },
-      "txt_queries": {
-        "mean": 0.0,
-        "std": 0.01,
-        "min": 0.0,
-        "max": 0.0,
-        "p95": 0.0
-      },
-      "failed_dns": {
-        "mean": 0.8642,
-        "std": 0.8278,
+        "std": 0.8528,
         "min": 0.0,
         "max": 2.0,
         "p95": 2.0
       },
       "upload_bytes": {
-        "mean": 271549.6296,
-        "std": 156977.3087,
-        "min": 12288.0,
-        "max": 512000.0,
-        "p95": 496640.0
+        "mean": 307479.2727,
+        "std": 155291.2065,
+        "min": 36864.0,
+        "max": 489472.0,
+        "p95": 477184.0
       },
       "download_bytes": {
-        "mean": 2509609.0864,
-        "std": 1394821.8734,
-        "min": 264192.0,
-        "max": 4919296.0,
-        "p95": 4779008.0
+        "mean": 2406772.3636,
+        "std": 1116552.9003,
+        "min": 239616.0,
+        "max": 3759104.0,
+        "p95": 3520000.0
       },
       "upload_ratio": {
-        "mean": 0.1425,
-        "std": 0.0547,
-        "min": 0.051,
-        "max": 0.248,
-        "p95": 0.235
+        "mean": 0.1844,
+        "std": 0.0535,
+        "min": 0.053,
+        "max": 0.247,
+        "p95": 0.2455
       },
       "avg_packet_size": {
-        "mean": 495.0049,
-        "std": 186.6212,
-        "min": 202.5,
-        "max": 798.3,
-        "p95": 772.6
+        "mean": 512.8,
+        "std": 149.6223,
+        "min": 270.5,
+        "max": 773.9,
+        "p95": 753.25
       },
       "unique_ips": {
-        "mean": 5.8765,
-        "std": 2.338,
-        "min": 2.0,
-        "max": 10.0,
-        "p95": 10.0
+        "mean": 5.7273,
+        "std": 1.8136,
+        "min": 3.0,
+        "max": 9.0,
+        "p95": 8.5
       },
       "new_ip_ratio": {
-        "mean": 0.0969,
-        "std": 0.0552,
-        "min": 0.0,
-        "max": 0.195,
-        "p95": 0.183
+        "mean": 0.119,
+        "std": 0.0488,
+        "min": 0.039,
+        "max": 0.179,
+        "p95": 0.17
       },
       "unique_ports": {
-        "mean": 5.0617,
-        "std": 2.1277,
+        "mean": 4.3636,
+        "std": 1.8227,
         "min": 2.0,
         "max": 8.0,
-        "p95": 8.0
+        "p95": 7.5
       },
       "high_ports": {
-        "mean": 1.2593,
-        "std": 1.0974,
+        "mean": 1.4545,
+        "std": 1.0757,
         "min": 0.0,
         "max": 3.0,
         "p95": 3.0
       },
       "http_count": {
-        "mean": 2.2593,
-        "std": 1.7693,
+        "mean": 3.1818,
+        "std": 1.4659,
         "min": 0.0,
         "max": 5.0,
         "p95": 5.0
       },
       "https_count": {
-        "mean": 22.3086,
-        "std": 9.8277,
+        "mean": 20.2727,
+        "std": 11.2984,
         "min": 5.0,
-        "max": 40.0,
-        "p95": 39.0
+        "max": 36.0,
+        "p95": 35.5
       },
       "arp_count": {
-        "mean": 1.2222,
-        "std": 1.1111,
+        "mean": 1.2727,
+        "std": 1.2129,
         "min": 0.0,
         "max": 3.0,
         "p95": 3.0
       }
     },
     "hourly": {
-      "8": {
-        "is_weekend": 1.0,
-        "dns_count": 17.6296,
-        "unique_domains": 8.4198,
-        "external_ratio": 0.7557,
+      "15": {
+        "is_weekend": 0.0,
+        "dns_count": 16.4545,
+        "unique_domains": 6.6364,
+        "external_ratio": 0.745,
         "txt_queries": 0.0,
-        "failed_dns": 0.8642,
-        "upload_bytes": 271549.6296,
-        "download_bytes": 2509609.0864,
-        "upload_ratio": 0.1425,
-        "avg_packet_size": 495.0049,
-        "unique_ips": 5.8765,
-        "new_ip_ratio": 0.0969,
-        "unique_ports": 5.0617,
-        "high_ports": 1.2593,
-        "http_count": 2.2593,
-        "https_count": 22.3086,
-        "arp_count": 1.2222
+        "failed_dns": 1.0,
+        "upload_bytes": 307479.2727,
+        "download_bytes": 2406772.3636,
+        "upload_ratio": 0.1844,
+        "avg_packet_size": 512.8,
+        "unique_ips": 5.7273,
+        "new_ip_ratio": 0.119,
+        "unique_ports": 4.3636,
+        "high_ports": 1.4545,
+        "http_count": 3.1818,
+        "https_count": 20.2727,
+        "arp_count": 1.2727
       }
     },
     "hour_std": {
-      "8": {
-        "is_weekend": 0.05,
-        "dns_count": 8.1369,
-        "unique_domains": 3.8164,
-        "external_ratio": 0.0821,
+      "15": {
+        "is_weekend": 0.01,
+        "dns_count": 8.7943,
+        "unique_domains": 3.0233,
+        "external_ratio": 0.0936,
         "txt_queries": 0.01,
-        "failed_dns": 0.8278,
-        "upload_bytes": 156977.3087,
-        "download_bytes": 1394821.8734,
-        "upload_ratio": 0.0547,
-        "avg_packet_size": 186.6212,
-        "unique_ips": 2.338,
-        "new_ip_ratio": 0.0552,
-        "unique_ports": 2.1277,
-        "high_ports": 1.0974,
-        "http_count": 1.7693,
-        "https_count": 9.8277,
-        "arp_count": 1.1111
+        "failed_dns": 0.8528,
+        "upload_bytes": 155291.2065,
+        "download_bytes": 1116552.9003,
+        "upload_ratio": 0.0535,
+        "avg_packet_size": 149.6223,
+        "unique_ips": 1.8136,
+        "new_ip_ratio": 0.0488,
+        "unique_ports": 1.8227,
+        "high_ports": 1.0757,
+        "http_count": 1.4659,
+        "https_count": 11.2984,
+        "arp_count": 1.2129
       }
     },
     "active_hours": {
-      "8": 81
+      "15": 11
     }
   },
   "11:22:33:44:55:66": {
     "mac": "11:22:33:44:55:66",
-    "window_count": 81,
-    "built_at": 1778488883.1485991,
+    "window_count": 11,
+    "built_at": 1779131615.8128786,
     "global": {
       "hour": {
-        "mean": 8.0,
-        "std": 0.8,
-        "min": 8.0,
-        "max": 8.0,
-        "p95": 8.0
-      },
-      "is_weekend": {
-        "mean": 1.0,
-        "std": 0.1,
-        "min": 1.0,
-        "max": 1.0,
-        "p95": 1.0
-      },
-      "dns_count": {
-        "mean": 17.3827,
-        "std": 7.1086,
-        "min": 5.0,
-        "max": 30.0,
-        "p95": 28.0
-      },
-      "unique_domains": {
-        "mean": 8.6296,
-        "std": 4.0045,
-        "min": 3.0,
+        "mean": 15.0,
+        "std": 1.5,
+        "min": 15.0,
         "max": 15.0,
         "p95": 15.0
       },
+      "is_weekend": {
+        "mean": 0.0,
+        "std": 0.01,
+        "min": 0.0,
+        "max": 0.0,
+        "p95": 0.0
+      },
+      "dns_count": {
+        "mean": 19.0909,
+        "std": 7.1789,
+        "min": 6.0,
+        "max": 28.0,
+        "p95": 27.0
+      },
+      "unique_domains": {
+        "mean": 8.9091,
+        "std": 4.0554,
+        "min": 3.0,
+        "max": 14.0,
+        "p95": 14.0
+      },
       "external_ratio": {
-        "mean": 0.7508,
-        "std": 0.0921,
+        "mean": 0.7021,
+        "std": 0.0808,
         "min": 0.6,
-        "max": 0.897,
-        "p95": 0.892
+        "max": 0.854,
+        "p95": 0.841
       },
       "txt_queries": {
         "mean": 0.0,
@@ -969,304 +585,175 @@
         "p95": 0.0
       },
       "failed_dns": {
-        "mean": 1.1481,
-        "std": 0.8331,
-        "min": 0.0,
-        "max": 2.0,
-        "p95": 2.0
-      },
-      "upload_bytes": {
-        "mean": 255228.8395,
-        "std": 148949.0203,
-        "min": 11264.0,
-        "max": 503808.0,
-        "p95": 475136.0
-      },
-      "download_bytes": {
-        "mean": 2726115.5556,
-        "std": 1513561.7314,
-        "min": 110592.0,
-        "max": 5117952.0,
-        "p95": 4998144.0
-      },
-      "upload_ratio": {
-        "mean": 0.1636,
-        "std": 0.0567,
-        "min": 0.055,
-        "max": 0.25,
-        "p95": 0.239
-      },
-      "avg_packet_size": {
-        "mean": 494.9815,
-        "std": 164.1373,
-        "min": 202.3,
-        "max": 776.3,
-        "p95": 748.4
-      },
-      "unique_ips": {
-        "mean": 5.7284,
-        "std": 2.5044,
-        "min": 2.0,
-        "max": 10.0,
-        "p95": 10.0
-      },
-      "new_ip_ratio": {
-        "mean": 0.0946,
-        "std": 0.0589,
-        "min": 0.001,
-        "max": 0.2,
-        "p95": 0.191
-      },
-      "unique_ports": {
-        "mean": 5.1852,
-        "std": 2.013,
-        "min": 2.0,
-        "max": 8.0,
-        "p95": 8.0
-      },
-      "high_ports": {
-        "mean": 1.5309,
-        "std": 1.1556,
-        "min": 0.0,
-        "max": 3.0,
-        "p95": 3.0
-      },
-      "http_count": {
-        "mean": 2.4198,
-        "std": 1.5703,
-        "min": 0.0,
-        "max": 5.0,
-        "p95": 5.0
-      },
-      "https_count": {
-        "mean": 22.7778,
-        "std": 10.8001,
-        "min": 5.0,
-        "max": 40.0,
-        "p95": 39.0
-      },
-      "arp_count": {
-        "mean": 1.4321,
-        "std": 1.0766,
-        "min": 0.0,
-        "max": 3.0,
-        "p95": 3.0
-      }
-    },
-    "weekday": {},
-    "weekend": {
-      "hour": {
-        "mean": 8.0,
-        "std": 0.8,
-        "min": 8.0,
-        "max": 8.0,
-        "p95": 8.0
-      },
-      "is_weekend": {
         "mean": 1.0,
-        "std": 0.1,
-        "min": 1.0,
-        "max": 1.0,
-        "p95": 1.0
-      },
-      "dns_count": {
-        "mean": 17.3827,
-        "std": 7.1086,
-        "min": 5.0,
-        "max": 30.0,
-        "p95": 28.0
-      },
-      "unique_domains": {
-        "mean": 8.6296,
-        "std": 4.0045,
-        "min": 3.0,
-        "max": 15.0,
-        "p95": 15.0
-      },
-      "external_ratio": {
-        "mean": 0.7508,
-        "std": 0.0921,
-        "min": 0.6,
-        "max": 0.897,
-        "p95": 0.892
-      },
-      "txt_queries": {
-        "mean": 0.0,
-        "std": 0.01,
-        "min": 0.0,
-        "max": 0.0,
-        "p95": 0.0
-      },
-      "failed_dns": {
-        "mean": 1.1481,
-        "std": 0.8331,
+        "std": 0.8528,
         "min": 0.0,
         "max": 2.0,
         "p95": 2.0
       },
       "upload_bytes": {
-        "mean": 255228.8395,
-        "std": 148949.0203,
-        "min": 11264.0,
-        "max": 503808.0,
-        "p95": 475136.0
+        "mean": 286720.0,
+        "std": 141657.6326,
+        "min": 27648.0,
+        "max": 496640.0,
+        "p95": 444928.0
       },
       "download_bytes": {
-        "mean": 2726115.5556,
-        "std": 1513561.7314,
-        "min": 110592.0,
-        "max": 5117952.0,
-        "p95": 4998144.0
+        "mean": 2147328.0,
+        "std": 1428051.0835,
+        "min": 239616.0,
+        "max": 5005312.0,
+        "p95": 4348928.0
       },
       "upload_ratio": {
-        "mean": 0.1636,
-        "std": 0.0567,
-        "min": 0.055,
-        "max": 0.25,
-        "p95": 0.239
+        "mean": 0.1568,
+        "std": 0.0583,
+        "min": 0.085,
+        "max": 0.244,
+        "p95": 0.2415
       },
       "avg_packet_size": {
-        "mean": 494.9815,
-        "std": 164.1373,
-        "min": 202.3,
-        "max": 776.3,
-        "p95": 748.4
+        "mean": 478.6909,
+        "std": 178.5174,
+        "min": 207.3,
+        "max": 772.4,
+        "p95": 740.25
       },
       "unique_ips": {
-        "mean": 5.7284,
-        "std": 2.5044,
-        "min": 2.0,
+        "mean": 6.9091,
+        "std": 2.3142,
+        "min": 3.0,
         "max": 10.0,
-        "p95": 10.0
+        "p95": 9.5
       },
       "new_ip_ratio": {
-        "mean": 0.0946,
-        "std": 0.0589,
-        "min": 0.001,
-        "max": 0.2,
-        "p95": 0.191
+        "mean": 0.1007,
+        "std": 0.0435,
+        "min": 0.011,
+        "max": 0.191,
+        "p95": 0.1705
       },
       "unique_ports": {
-        "mean": 5.1852,
-        "std": 2.013,
+        "mean": 4.5455,
+        "std": 1.4374,
         "min": 2.0,
-        "max": 8.0,
-        "p95": 8.0
+        "max": 6.0,
+        "p95": 6.0
       },
       "high_ports": {
-        "mean": 1.5309,
-        "std": 1.1556,
+        "mean": 1.4545,
+        "std": 0.8907,
         "min": 0.0,
         "max": 3.0,
-        "p95": 3.0
+        "p95": 2.5
       },
       "http_count": {
-        "mean": 2.4198,
-        "std": 1.5703,
+        "mean": 2.2727,
+        "std": 1.1355,
         "min": 0.0,
-        "max": 5.0,
-        "p95": 5.0
+        "max": 4.0,
+        "p95": 3.5
       },
       "https_count": {
-        "mean": 22.7778,
-        "std": 10.8001,
-        "min": 5.0,
+        "mean": 27.4545,
+        "std": 9.7828,
+        "min": 7.0,
         "max": 40.0,
-        "p95": 39.0
+        "p95": 40.0
       },
       "arp_count": {
-        "mean": 1.4321,
-        "std": 1.0766,
+        "mean": 1.3636,
+        "std": 1.2264,
         "min": 0.0,
         "max": 3.0,
         "p95": 3.0
       }
     },
     "hourly": {
-      "8": {
-        "is_weekend": 1.0,
-        "dns_count": 17.3827,
-        "unique_domains": 8.6296,
-        "external_ratio": 0.7508,
+      "15": {
+        "is_weekend": 0.0,
+        "dns_count": 19.0909,
+        "unique_domains": 8.9091,
+        "external_ratio": 0.7021,
         "txt_queries": 0.0,
-        "failed_dns": 1.1481,
-        "upload_bytes": 255228.8395,
-        "download_bytes": 2726115.5556,
-        "upload_ratio": 0.1636,
-        "avg_packet_size": 494.9815,
-        "unique_ips": 5.7284,
-        "new_ip_ratio": 0.0946,
-        "unique_ports": 5.1852,
-        "high_ports": 1.5309,
-        "http_count": 2.4198,
-        "https_count": 22.7778,
-        "arp_count": 1.4321
+        "failed_dns": 1.0,
+        "upload_bytes": 286720.0,
+        "download_bytes": 2147328.0,
+        "upload_ratio": 0.1568,
+        "avg_packet_size": 478.6909,
+        "unique_ips": 6.9091,
+        "new_ip_ratio": 0.1007,
+        "unique_ports": 4.5455,
+        "high_ports": 1.4545,
+        "http_count": 2.2727,
+        "https_count": 27.4545,
+        "arp_count": 1.3636
       }
     },
     "hour_std": {
-      "8": {
-        "is_weekend": 0.05,
-        "dns_count": 7.1086,
-        "unique_domains": 4.0045,
-        "external_ratio": 0.0921,
+      "15": {
+        "is_weekend": 0.01,
+        "dns_count": 7.1789,
+        "unique_domains": 4.0554,
+        "external_ratio": 0.0808,
         "txt_queries": 0.01,
-        "failed_dns": 0.8331,
-        "upload_bytes": 148949.0203,
-        "download_bytes": 1513561.7314,
-        "upload_ratio": 0.0567,
-        "avg_packet_size": 164.1373,
-        "unique_ips": 2.5044,
-        "new_ip_ratio": 0.0589,
-        "unique_ports": 2.013,
-        "high_ports": 1.1556,
-        "http_count": 1.5703,
-        "https_count": 10.8001,
-        "arp_count": 1.0766
+        "failed_dns": 0.8528,
+        "upload_bytes": 141657.6326,
+        "download_bytes": 1428051.0835,
+        "upload_ratio": 0.0583,
+        "avg_packet_size": 178.5174,
+        "unique_ips": 2.3142,
+        "new_ip_ratio": 0.0435,
+        "unique_ports": 1.4374,
+        "high_ports": 0.8907,
+        "http_count": 1.1355,
+        "https_count": 9.7828,
+        "arp_count": 1.2264
       }
     },
     "active_hours": {
-      "8": 81
+      "15": 11
     }
   },
   "de:ad:be:ef:00:01": {
     "mac": "de:ad:be:ef:00:01",
-    "window_count": 81,
-    "built_at": 1778488883.161898,
+    "window_count": 11,
+    "built_at": 1779131615.8205657,
     "global": {
       "hour": {
-        "mean": 8.0,
-        "std": 0.8,
-        "min": 8.0,
-        "max": 8.0,
-        "p95": 8.0
-      },
-      "is_weekend": {
-        "mean": 1.0,
-        "std": 0.1,
-        "min": 1.0,
-        "max": 1.0,
-        "p95": 1.0
-      },
-      "dns_count": {
-        "mean": 17.642,
-        "std": 7.0751,
-        "min": 5.0,
-        "max": 30.0,
-        "p95": 28.0
-      },
-      "unique_domains": {
-        "mean": 8.7531,
-        "std": 4.1052,
-        "min": 3.0,
+        "mean": 15.0,
+        "std": 1.5,
+        "min": 15.0,
         "max": 15.0,
         "p95": 15.0
       },
+      "is_weekend": {
+        "mean": 0.0,
+        "std": 0.01,
+        "min": 0.0,
+        "max": 0.0,
+        "p95": 0.0
+      },
+      "dns_count": {
+        "mean": 20.1818,
+        "std": 6.2058,
+        "min": 11.0,
+        "max": 30.0,
+        "p95": 28.5
+      },
+      "unique_domains": {
+        "mean": 10.7273,
+        "std": 3.2499,
+        "min": 3.0,
+        "max": 15.0,
+        "p95": 14.5
+      },
       "external_ratio": {
-        "mean": 0.7532,
-        "std": 0.0827,
-        "min": 0.608,
-        "max": 0.9,
-        "p95": 0.892
+        "mean": 0.7399,
+        "std": 0.0835,
+        "min": 0.628,
+        "max": 0.875,
+        "p95": 0.8615
       },
       "txt_queries": {
         "mean": 0.0,
@@ -1276,263 +763,134 @@
         "p95": 0.0
       },
       "failed_dns": {
-        "mean": 0.9753,
-        "std": 0.8311,
-        "min": 0.0,
-        "max": 2.0,
-        "p95": 2.0
-      },
-      "upload_bytes": {
-        "mean": 257517.037,
-        "std": 142695.1258,
-        "min": 19456.0,
-        "max": 510976.0,
-        "p95": 486400.0
-      },
-      "download_bytes": {
-        "mean": 2194710.1235,
-        "std": 1380107.7295,
-        "min": 128000.0,
-        "max": 5001216.0,
-        "p95": 4486144.0
-      },
-      "upload_ratio": {
-        "mean": 0.151,
-        "std": 0.0546,
-        "min": 0.051,
-        "max": 0.244,
-        "p95": 0.23
-      },
-      "avg_packet_size": {
-        "mean": 523.2173,
-        "std": 172.0327,
-        "min": 209.3,
-        "max": 799.4,
-        "p95": 780.6
-      },
-      "unique_ips": {
-        "mean": 5.9136,
-        "std": 2.5298,
-        "min": 2.0,
-        "max": 10.0,
-        "p95": 10.0
-      },
-      "new_ip_ratio": {
-        "mean": 0.0934,
-        "std": 0.0599,
-        "min": 0.002,
-        "max": 0.199,
-        "p95": 0.179
-      },
-      "unique_ports": {
-        "mean": 5.1481,
-        "std": 1.9633,
-        "min": 2.0,
-        "max": 8.0,
-        "p95": 8.0
-      },
-      "high_ports": {
-        "mean": 1.4691,
-        "std": 1.0896,
-        "min": 0.0,
-        "max": 3.0,
-        "p95": 3.0
-      },
-      "http_count": {
-        "mean": 2.4815,
-        "std": 1.7221,
-        "min": 0.0,
-        "max": 5.0,
-        "p95": 5.0
-      },
-      "https_count": {
-        "mean": 19.7284,
-        "std": 9.4647,
-        "min": 5.0,
-        "max": 40.0,
-        "p95": 34.0
-      },
-      "arp_count": {
-        "mean": 1.7037,
-        "std": 1.1487,
-        "min": 0.0,
-        "max": 3.0,
-        "p95": 3.0
-      }
-    },
-    "weekday": {},
-    "weekend": {
-      "hour": {
-        "mean": 8.0,
-        "std": 0.8,
-        "min": 8.0,
-        "max": 8.0,
-        "p95": 8.0
-      },
-      "is_weekend": {
         "mean": 1.0,
-        "std": 0.1,
-        "min": 1.0,
-        "max": 1.0,
-        "p95": 1.0
-      },
-      "dns_count": {
-        "mean": 17.642,
-        "std": 7.0751,
-        "min": 5.0,
-        "max": 30.0,
-        "p95": 28.0
-      },
-      "unique_domains": {
-        "mean": 8.7531,
-        "std": 4.1052,
-        "min": 3.0,
-        "max": 15.0,
-        "p95": 15.0
-      },
-      "external_ratio": {
-        "mean": 0.7532,
-        "std": 0.0827,
-        "min": 0.608,
-        "max": 0.9,
-        "p95": 0.892
-      },
-      "txt_queries": {
-        "mean": 0.0,
-        "std": 0.01,
-        "min": 0.0,
-        "max": 0.0,
-        "p95": 0.0
-      },
-      "failed_dns": {
-        "mean": 0.9753,
-        "std": 0.8311,
+        "std": 0.8528,
         "min": 0.0,
         "max": 2.0,
         "p95": 2.0
       },
       "upload_bytes": {
-        "mean": 257517.037,
-        "std": 142695.1258,
-        "min": 19456.0,
-        "max": 510976.0,
-        "p95": 486400.0
+        "mean": 325166.5455,
+        "std": 135149.2138,
+        "min": 76800.0,
+        "max": 490496.0,
+        "p95": 489984.0
       },
       "download_bytes": {
-        "mean": 2194710.1235,
-        "std": 1380107.7295,
-        "min": 128000.0,
-        "max": 5001216.0,
-        "p95": 4486144.0
+        "mean": 2281472.0,
+        "std": 1035385.3057,
+        "min": 454656.0,
+        "max": 3795968.0,
+        "p95": 3703296.0
       },
       "upload_ratio": {
-        "mean": 0.151,
-        "std": 0.0546,
-        "min": 0.051,
-        "max": 0.244,
-        "p95": 0.23
+        "mean": 0.1462,
+        "std": 0.0633,
+        "min": 0.053,
+        "max": 0.234,
+        "p95": 0.229
       },
       "avg_packet_size": {
-        "mean": 523.2173,
-        "std": 172.0327,
-        "min": 209.3,
-        "max": 799.4,
-        "p95": 780.6
+        "mean": 517.4727,
+        "std": 179.6938,
+        "min": 203.9,
+        "max": 779.2,
+        "p95": 761.75
       },
       "unique_ips": {
-        "mean": 5.9136,
-        "std": 2.5298,
-        "min": 2.0,
+        "mean": 6.1818,
+        "std": 2.3284,
+        "min": 3.0,
         "max": 10.0,
         "p95": 10.0
       },
       "new_ip_ratio": {
-        "mean": 0.0934,
-        "std": 0.0599,
-        "min": 0.002,
-        "max": 0.199,
-        "p95": 0.179
+        "mean": 0.115,
+        "std": 0.0522,
+        "min": 0.011,
+        "max": 0.178,
+        "p95": 0.177
       },
       "unique_ports": {
-        "mean": 5.1481,
-        "std": 1.9633,
+        "mean": 4.8182,
+        "std": 1.6959,
         "min": 2.0,
         "max": 8.0,
-        "p95": 8.0
+        "p95": 7.5
       },
       "high_ports": {
-        "mean": 1.4691,
-        "std": 1.0896,
+        "mean": 1.2727,
+        "std": 0.8624,
         "min": 0.0,
         "max": 3.0,
-        "p95": 3.0
+        "p95": 2.5
       },
       "http_count": {
-        "mean": 2.4815,
-        "std": 1.7221,
+        "mean": 2.0,
+        "std": 1.5954,
         "min": 0.0,
         "max": 5.0,
-        "p95": 5.0
+        "p95": 4.5
       },
       "https_count": {
-        "mean": 19.7284,
-        "std": 9.4647,
-        "min": 5.0,
+        "mean": 21.9091,
+        "std": 10.2021,
+        "min": 8.0,
         "max": 40.0,
-        "p95": 34.0
+        "p95": 37.5
       },
       "arp_count": {
-        "mean": 1.7037,
-        "std": 1.1487,
+        "mean": 1.2727,
+        "std": 1.1355,
         "min": 0.0,
         "max": 3.0,
         "p95": 3.0
       }
     },
     "hourly": {
-      "8": {
-        "is_weekend": 1.0,
-        "dns_count": 17.642,
-        "unique_domains": 8.7531,
-        "external_ratio": 0.7532,
+      "15": {
+        "is_weekend": 0.0,
+        "dns_count": 20.1818,
+        "unique_domains": 10.7273,
+        "external_ratio": 0.7399,
         "txt_queries": 0.0,
-        "failed_dns": 0.9753,
-        "upload_bytes": 257517.037,
-        "download_bytes": 2194710.1235,
-        "upload_ratio": 0.151,
-        "avg_packet_size": 523.2173,
-        "unique_ips": 5.9136,
-        "new_ip_ratio": 0.0934,
-        "unique_ports": 5.1481,
-        "high_ports": 1.4691,
-        "http_count": 2.4815,
-        "https_count": 19.7284,
-        "arp_count": 1.7037
+        "failed_dns": 1.0,
+        "upload_bytes": 325166.5455,
+        "download_bytes": 2281472.0,
+        "upload_ratio": 0.1462,
+        "avg_packet_size": 517.4727,
+        "unique_ips": 6.1818,
+        "new_ip_ratio": 0.115,
+        "unique_ports": 4.8182,
+        "high_ports": 1.2727,
+        "http_count": 2.0,
+        "https_count": 21.9091,
+        "arp_count": 1.2727
       }
     },
     "hour_std": {
-      "8": {
-        "is_weekend": 0.05,
-        "dns_count": 7.0751,
-        "unique_domains": 4.1052,
-        "external_ratio": 0.0827,
+      "15": {
+        "is_weekend": 0.01,
+        "dns_count": 6.2058,
+        "unique_domains": 3.2499,
+        "external_ratio": 0.0835,
         "txt_queries": 0.01,
-        "failed_dns": 0.8311,
-        "upload_bytes": 142695.1258,
-        "download_bytes": 1380107.7295,
-        "upload_ratio": 0.0546,
-        "avg_packet_size": 172.0327,
-        "unique_ips": 2.5298,
-        "new_ip_ratio": 0.0599,
-        "unique_ports": 1.9633,
-        "high_ports": 1.0896,
-        "http_count": 1.7221,
-        "https_count": 9.4647,
-        "arp_count": 1.1487
+        "failed_dns": 0.8528,
+        "upload_bytes": 135149.2138,
+        "download_bytes": 1035385.3057,
+        "upload_ratio": 0.0633,
+        "avg_packet_size": 179.6938,
+        "unique_ips": 2.3284,
+        "new_ip_ratio": 0.0522,
+        "unique_ports": 1.6959,
+        "high_ports": 0.8624,
+        "http_count": 1.5954,
+        "https_count": 10.2021,
+        "arp_count": 1.1355
       }
     },
     "active_hours": {
-      "8": 81
+      "15": 11
     }
   }
 }

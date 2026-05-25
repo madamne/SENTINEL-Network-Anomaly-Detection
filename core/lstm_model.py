@@ -51,7 +51,7 @@ FEATURE_COLS = [
     "arp_count",
 ]
 
-SEQUENCE_LEN = 12  # Son 12 pencere = 1 saatlik geçmiş (5dk x 12)
+SEQUENCE_LEN = 6   # Son 6 pencere = 30 dakikalık geçmiş (5dk x 6) — ev testi için
 ANOMALY_THRESH = 0.55  # Bu eşiğin üstü = anomali
 
 
@@ -60,7 +60,7 @@ def _build_model(input_dim: int):
     """
     LSTM Autoencoder mimarisi:
 
-    Giriş (12 pencere, 18 özellik)
+    Giriş (6 pencere, 18 özellik)
         │
         ▼
     LSTM Encoder → 64 gizli birim
@@ -170,7 +170,7 @@ class SentinelLSTM:
         self.scaler = MinMaxScaler()
         self.loaded = False
         # Cihaz başına sequence buffer
-        # {mac: [son 12 özellik vektörü]}
+        # {mac: [son 6 özellik vektörü]}
         self._seqs: dict = {}
         self._load()
 
@@ -214,14 +214,14 @@ class SentinelLSTM:
         print("[LSTM] Eğitim verisi çekiliyor...")
         df = get_windows_df(limit=50000)
 
-        if df.empty or len(df) < SEQUENCE_LEN * 2:
-            print(f"[LSTM] Yetersiz veri. En az {SEQUENCE_LEN*2} pencere gerekli.")
+        if df.empty or len(df) < 10:
+            print(f"[LSTM] Yetersiz veri. En az 10 pencere gerekli.")
             print("[LSTM] Önce veri topla: python3 sentinel.py --collect")
             return
 
         # Sadece normal pencereler
         normal = df[df["attack_type"] == "normal"].copy()
-        if len(normal) < SEQUENCE_LEN * 2:
+        if len(normal) < 10:
             normal = df.copy()
 
         print(f"[LSTM] {len(normal)} normal pencere ile eğitim başlıyor...")
@@ -237,13 +237,13 @@ class SentinelLSTM:
             vecs.append(v)
 
         # Sequence'lar oluştur
-        # [v1,v2,...,v12] → giriş, aynısı → hedef (autoencoder)
+        # [v1,v2,...,v6] -> giris, aynisi -> hedef (autoencoder)
         sequences = []
         for i in range(len(vecs) - SEQUENCE_LEN):
             seq = vecs[i : i + SEQUENCE_LEN]
             sequences.append(seq)
 
-        if len(sequences) < 10:
+        if len(sequences) < 3:
             print("[LSTM] Yeterli sequence yok.")
             return
 
@@ -357,16 +357,20 @@ class SentinelLSTM:
 
     def _fallback(self, features: dict) -> dict:
         """
-        Model yokken kural tabanlı basit skor.
-        Demo modda veya eğitim öncesinde çalışır.
+        Model yokken kural tabanli deterministik skor.
+        Demo modda veya egitim oncesinde calisir.
+        NOT: random.uniform() yerine hash tabanli skor kullanir --
+             test tekrarlanabilirligi icin deterministik olmali.
         """
-        import random
-
         attack = features.get("attack_type", "normal")
+        mac = str(features.get("device_mac", ""))
+        hour = int(features.get("hour", 0))
+        # Deterministik: MAC + attack + saat karmasi
+        h = abs(hash((mac, attack, hour))) % 1000 / 1000.0
         if attack == "normal":
-            score = round(random.uniform(0.05, 0.25), 4)
+            score = round(0.05 + h * 0.20, 4)   # 0.05 - 0.25 arasinda
         else:
-            score = round(random.uniform(0.65, 0.95), 4)
+            score = round(0.65 + h * 0.30, 4)   # 0.65 - 0.95 arasinda
         return {
             "anomaly_score": score,
             "is_anomaly": score > ANOMALY_THRESH,

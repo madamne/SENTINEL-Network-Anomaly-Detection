@@ -35,6 +35,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+BASE_DIR = os.path.join(os.path.dirname(__file__), "..")
 INDEX_HTML = os.path.join(os.path.dirname(__file__), "index.html")
 
 # ── WebSocket bağlantı yöneticisi ─────────────────────────────────────────────
@@ -64,7 +65,7 @@ class ConnectionManager:
 
 
 manager = ConnectionManager()
-_demo_task: Optional[asyncio.Task] = None  # devre dışı — yalnızca canlı SQLite verisi kullanılır
+# _demo_task kaldirildi — dashboard yalnizca canli SQLite verisi kullanir
 _notify_event: asyncio.Event = asyncio.Event()  # sentinel.py → anlık broadcast tetikleyici
 
 
@@ -450,9 +451,76 @@ async def internal_notify():
     return {"ok": True}
 
 
+@app.get("/api/health")
+async def api_health():
+    """Sistem saglik kontrolu — uptime, model durumu, DB baglantisi."""
+    import platform
+    db_ok = False
+    try:
+        from core.database import get_conn
+        conn = get_conn()
+        conn.execute("SELECT 1").fetchone()
+        conn.close()
+        db_ok = True
+    except Exception:
+        pass
+
+    model_files = {
+        "lstm": os.path.exists(os.path.join(BASE_DIR, "models", "sentinel_lstm.pt")),
+        "iforest": os.path.exists(os.path.join(BASE_DIR, "models", "iforest.pkl")),
+        "scaler": os.path.exists(os.path.join(BASE_DIR, "models", "sentinel_scaler.json")),
+    }
+
+    return {
+        "status": "ok" if db_ok else "degraded",
+        "db": db_ok,
+        "models": model_files,
+        "platform": platform.system(),
+        "uptime_ts": time.time(),
+    }
+
+
+@app.get("/api/model-info")
+async def api_model_info():
+    """Model surum ve egitim bilgisi — juri sunum icin."""
+    info = {
+        "lstm": {
+            "mimarisi": "LSTM Autoencoder (2L Encoder + 2L Decoder)",
+            "giris_ozelligi": 18,
+            "sequence_len": 6,
+            "gizli_birim": 64,
+            "egitim": "Sadece normal trafik (unsupervised)",
+            "kayip": "MSE",
+        },
+        "iforest": {
+            "mimarisi": "Isolation Forest",
+            "n_estimators": 200,
+            "contamination": 0.03,
+            "ozellik_sayisi": 13,
+            "egitim": "Normal trafik (contamination=0.03)",
+        },
+        "beacon": {
+            "mimarisi": "FFT + Varyasyon Katsayisi (CoV)",
+            "pencere_sayisi": 36,
+            "esik": 0.65,
+            "algoritma": "inter-arrival CoV * 0.5 + FFT periyodik_oran * 0.5",
+        },
+        "behavioral": {
+            "mimarisi": "Z-score profiling (saatlik histogram)",
+            "baseline": "24h saatlik + hafta ici/sonu",
+            "esik": "sigmoid(weighted_z/2)",
+        },
+        "fuzyon": {
+            "formul": "Behavioral*0.30 + LSTM*0.35 + IForest*0.25 + Beacon*0.10",
+            "uyari_esigi": 0.65,
+        },
+    }
+    return info
+
+
 @app.get("/api/report")
 async def generate_report():
-    return JSONResponse({"error": "PDF rapor devre dışı bırakıldı."}, status_code=404)
+    return JSONResponse({"error": "PDF rapor devre disi birakildi."}, status_code=404)
 
 
 # ── WebSocket ────────────────────────────────────────────────────────────────
@@ -526,27 +594,4 @@ async def _broadcaster():
                 pass
 
 
-# ── Demo çalıştırıcı ─────────────────────────────────────────────────────────
-
-
-async def _run_demo():
-    try:
-        import subprocess
-        import sys
-
-        proc = await asyncio.create_subprocess_exec(
-            sys.executable,
-            "-c",
-            "import sys, os; sys.path.insert(0, '/home/kali/sentinel'); "
-            "from core.database import init_db; init_db(); "
-            "from core.simulator import simulate; "
-            "import sentinel; sentinel.init_ai(); "
-            "for atype in ['port_scan','dns_tunnel','exfiltration','lateral_movement']: "
-            "    simulate(atype, callback=sentinel.on_window, windows=2)",
-            stdout=asyncio.subprocess.DEVNULL,
-            stderr=asyncio.subprocess.DEVNULL,
-        )
-        await proc.wait()
-        await manager.broadcast({"type": "demo_done", "ts": time.time()})
-    except Exception as e:
-        await manager.broadcast({"type": "demo_error", "error": str(e)})
+# (Demo calistirici kaldirildi — canli SQLite verisi kullanilir)

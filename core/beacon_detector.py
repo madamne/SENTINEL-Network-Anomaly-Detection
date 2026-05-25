@@ -36,22 +36,23 @@ PENCERE_SAYISI = 36
 # Beacon skoru eşiği
 BEACON_ESIGI = 0.65
 
-# Cihaz başına zaman serisi tamponu
-_zaman_tampon: dict = defaultdict(lambda: deque(maxlen=PENCERE_SAYISI))
-_baglanti_tampon: dict = defaultdict(lambda: deque(maxlen=PENCERE_SAYISI))
-
-
 class BeaconTespitcisi:
     """
-    Cihaz başına periyodik trafik davranışını FFT ile tespit eder.
+    Cihaz basi periyodik trafik davranisini FFT ile tespit eder.
 
-    Kullanım:
+    Kullanim:
       detector = BeaconTespitcisi()
       sonuc = detector.pencere_isle(mac, features, timestamp)
+
+    NOT: Tamponlar instance degiskeni olarak tutulur (module-level degil).
+         Boylece farkli test calismalari arasinda durum sizmasi olmaz.
     """
 
     def __init__(self):
         self._skor_gecmis: dict = defaultdict(list)
+        # Her instance kendi tamponuna sahip — test izolasyonu saglar
+        self._zaman_tampon: dict = defaultdict(lambda: deque(maxlen=PENCERE_SAYISI))
+        self._baglanti_tampon: dict = defaultdict(lambda: deque(maxlen=PENCERE_SAYISI))
 
     def pencere_isle(self, mac: str, features: dict, ts: float = None) -> dict:
         """
@@ -63,10 +64,10 @@ class BeaconTespitcisi:
         if ts is None:
             ts = time.time()
 
-        _zaman_tampon[mac].append(ts)
-        _baglanti_tampon[mac].append(features.get("unique_ips", 0))
+        self._zaman_tampon[mac].append(ts)
+        self._baglanti_tampon[mac].append(features.get("unique_ips", 0))
 
-        if len(_zaman_tampon[mac]) < 6:
+        if len(self._zaman_tampon[mac]) < 6:
             return {
                 "beacon_score": 0.0,
                 "is_beacon": False,
@@ -88,7 +89,7 @@ class BeaconTespitcisi:
           4. Varyasyon katsayısı (CoV) hesapla
           5. Skoru birleştir
         """
-        zaman_listesi = list(_zaman_tampon[mac])
+        zaman_listesi = list(self._zaman_tampon[mac])
         aralikar = np.diff(zaman_listesi)
 
         if len(aralikar) < 5:
@@ -102,7 +103,7 @@ class BeaconTespitcisi:
         cov = std / max(ort, 1e-6)
 
         # FFT periyodiklik analizi
-        baglanti_serisi = np.array(list(_baglanti_tampon[mac]), dtype=float)
+        baglanti_serisi = np.array(list(self._baglanti_tampon[mac]), dtype=float)
         if len(baglanti_serisi) >= 8:
             fft_mag = np.abs(np.fft.rfft(baglanti_serisi))
             fft_mag[0] = 0  # DC bileşenini çıkar

@@ -98,7 +98,7 @@ class BehavioralProfiler:
         print(f"[Behavioral] ✓ {len(self.profiles)} profil kaydedildi → {PROFILE_PATH}")
 
     # ── Profil hesapla ───────────────────────────────────────────────────────
-    def build_profiles(self, min_windows: int = 20):
+    def build_profiles(self, min_windows: int = 10):
         """
         DB'deki pencerelerden her cihaz için tam profil oluştur.
         v2 eklemeleri:
@@ -288,29 +288,6 @@ class BehavioralProfiler:
         upload = {h: round(hourly[h].get("upload_bytes", 0) / 1_048_576, 2) for h in hourly}
         return {"counts": counts, "avg_upload_mb": upload}
 
-    def get_weekday_weekend_diff(self, mac: str) -> dict:
-        """
-        Hafta içi – hafta sonu fark raporu (dashboard özet kartı için).
-        Döner: {feature: {weekday_mean, weekend_mean, diff_pct}}
-        """
-        if mac not in self.profiles:
-            return {}
-        prof = self.profiles[mac]
-        wd = prof.get("weekday", {})
-        we = prof.get("weekend", {})
-        result = {}
-        for col in FEATURE_COLS:
-            if col in wd and col in we:
-                wdm = wd[col]["mean"]
-                wem = we[col]["mean"]
-                base = max(abs(wdm), 1e-6)
-                result[col] = {
-                    "weekday_mean": wdm,
-                    "weekend_mean": wem,
-                    "diff_pct": round((wem - wdm) / base * 100, 1),
-                }
-        return result
-
     def get_summary(self, mac: str) -> dict:
         """Dashboard için cihaz profil özeti."""
         if mac not in self.profiles:
@@ -389,10 +366,12 @@ def classify_attack(features: dict, z_scores: dict) -> str:
         return "exfiltration"
     if z("txt_queries") > 3 or (z("dns_count") > 3 and z("failed_dns") > 2):
         return "dns_tunnel"
+    # lateral_movement ONCE kontrol edilmeli: ARP flood + dahili IP spread
+    # external_ratio < 0.3 -> trafik ag icinde kaliyor (disa sizmiyor)
+    if z("arp_count") > 3 and z("new_ip_ratio") > 2 and features.get("external_ratio", 1.0) < 0.3:
+        return "lateral_movement"
     if z("unique_ports") > 3 and z("unique_ips") > 2:
         return "port_scan"
-    if z("arp_count") > 3 and z("new_ip_ratio") > 2:
-        return "lateral_movement"
     if features.get("hour", 12) in range(1, 6) and z("dns_count") > 2:
         return "after_hours"
     return "normal"
