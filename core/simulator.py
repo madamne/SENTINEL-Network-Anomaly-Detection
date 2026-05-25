@@ -32,14 +32,15 @@ TARGET_IP = "192.168.1.99"
 
 
 def _base_window() -> dict:
-    """Normal görünen temel pencere."""
+    """Normal görünen temel pencere — tüm zaman alanları gerçek sistem saati."""
     now = time.localtime()
+    real_ts = time.time()
     return {
-        "ts": time.time(),
+        "ts": real_ts,
         "device_mac": TARGET_MAC,
         "device_ip": TARGET_IP,
-        "hour": now.tm_hour,
-        "is_weekend": 1 if now.tm_wday >= 5 else 0,
+        "hour": now.tm_hour,          # gerçek saat
+        "is_weekend": 1 if now.tm_wday >= 5 else 0,  # gerçek gün
         "dns_count": random.randint(5, 20),
         "unique_domains": random.randint(3, 10),
         "external_ratio": round(random.uniform(0.6, 0.85), 3),
@@ -82,10 +83,9 @@ def simulate(attack_type: str, callback=None, windows: int = 5):
         w = _base_window()
 
         if attack_type == "exfiltration":
-            # Gece vakti anormal upload
+            # Anormal upload — saat gerçek sistem saatinden alınır (_base_window)
             w.update(
                 {
-                    "hour": random.randint(1, 4),
                     "upload_bytes": random.randint(50, 200) * 1024 * 1024,
                     "upload_ratio": round(random.uniform(0.75, 0.95), 3),
                     "dns_count": random.randint(100, 300),

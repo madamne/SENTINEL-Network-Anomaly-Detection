@@ -36,8 +36,14 @@ class SHAPExplainer:
     def explain(
         self, features: dict, z_scores: dict, anomaly_score: float, attack_type: str
     ) -> dict:
+        from datetime import datetime
+        import time
+
         label = ATTACK_TR.get(attack_type, attack_type)
-        hour = features.get("hour", 0)
+
+        # Gerçek saat: ts unix timestamp'inden al (features["hour"] simülatör saati olabilir)
+        ts = features.get("ts", time.time())
+        gercek_saat = datetime.fromtimestamp(float(ts)).strftime("%H:%M:%S")
 
         if attack_type == "normal":
             verdict = f"Cihaz normal davranış sergiledi. Anomali skoru: {anomaly_score:.2f}"
@@ -47,7 +53,7 @@ class SHAPExplainer:
             verdict = (
                 f"{label} tespit edildi! "
                 f"Skor: {anomaly_score:.2f} | "
-                f"Saat: {hour}:00 | "
+                f"Saat: {gercek_saat} | "
                 f"Sebep: {reasons}"
             )
 

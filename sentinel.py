@@ -29,8 +29,18 @@ from core.database import (
 from core.iforest_detector import YalitimOrmani
 from core.lstm_model import SentinelLSTM
 from core.shap_explainer import SHAPExplainer
+from core.telegram_notifier import bildirim_gonder, baglanti_test
 
 DASHBOARD_NOTIFY_URL = "http://127.0.0.1:8501/api/internal/notify"
+
+
+def _telegram_baslangic_kontrol():
+    """Uygulama başlarken Telegram bağlantısını doğrula."""
+    ok, bilgi = baglanti_test()
+    if ok:
+        print(f"[Telegram] ✓ Bot hazır: {bilgi}")
+    else:
+        print(f"[Telegram] ✗ Bağlantı yok: {bilgi} (bildirimler devre dışı)")
 
 
 def _notify_dashboard():
@@ -72,6 +82,7 @@ def ai_baslat():
     explainer = SHAPExplainer(lstm, lstm.scaler)
     iforest = YalitimOrmani()
     print("[SENTINEL] ✓ Yapay zeka motoru hazır (LSTM + IF + Beacon)")
+    _telegram_baslangic_kontrol()
 
 
 def pencere_isle(features: dict):
@@ -140,6 +151,7 @@ def pencere_isle(features: dict):
             details=explanation["verdict"],
         )
         threading.Thread(target=_notify_dashboard, daemon=True).start()
+        bildirim_gonder(mac, attack_type, final, ts)
         print(
             f"\033[31m[🔴 UYARI] {mac} | {explanation['attack_label']}"
             f" | Skor:{final:.2f}"
