@@ -212,7 +212,7 @@ class BehavioralProfiler:
             if col in ("hour", "is_weekend") or col not in features:
                 continue
             if col not in baseline:
-                # Fallback to global
+                # Genel profile dön
                 if col not in prof.get("global", {}):
                     continue
                 mean = prof["global"][col]["mean"]
