@@ -1,45 +1,6 @@
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-.Python
-*.egg
-*.egg-info/
-dist/
-build/
-.eggs/
 venv/
-.venv/
-env/
-
-# SENTINEL veri dosyalari
-data/sentinel.db
-data/*.db-journal
-data/sentinel_live.log
-data/session_start.txt
-data/ev_testi_*/
-data/nmap_*.txt
-data/*.log
-
-# Model dosyalari (git-lfs ile yonetilmeli)
-models/sentinel_lstm.pt
-models/iforest.pkl
-models/sentinel_scaler.json
-models/device_profiles.json
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Gecici dosyalar
-reports/
-*.pdf
-*.tmp
+__pycache__/
+*/__pycache__/
+*.pyc
+*.log
+dashboard.log

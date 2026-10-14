@@ -3,10 +3,6 @@ SENTINEL - Beacon (C2 İşaret) Tespiti
 =======================================
 Kaynak:
   Bartos & Kanta (2019) "RNN-based C2 Beaconing Detection"
-  Chowdhary et al. (2023) "Frequency-Domain C2 Detection in Encrypted Traffic",
-    ACM CCS 2023.
-  García et al. (2024) "Lightweight Beaconing Detector for IoT Networks",
-    NDSS 2024.
 
 Ne yapar?
   Zararlı yazılımlar C2 sunucusuna düzenli aralıklarla (örn. her 60s)

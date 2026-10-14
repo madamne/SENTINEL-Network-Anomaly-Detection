@@ -327,7 +327,6 @@ sentinel/
 5. Mirsky, Y. ve ark. "Kitsune: An Ensemble of Autoencoders for Online Network Intrusion Detection." *NDSS 2018*.
 6. Liu, F.T. ve ark. "Isolation Forest." *IEEE ICDM 2008*.
 7. Bartos, K. & Kanta, M. "Robust Network Traffic Classification." *IEEE/ACM TON 2015*.
-8. Ahmad, S. ve ark. "Ensemble Anomaly Detection for IoT Networks." *NDSS Symposium 2024*.
 
 ---
 

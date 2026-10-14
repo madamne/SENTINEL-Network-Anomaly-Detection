@@ -125,7 +125,6 @@ def pencere_isle(features: dict):
     # Füzyon: mevcut modellere göre uyarlanabilir ağırlıklı ensemble
     # IF eğitimsizse orijinal 2-katman ağırlıklarına dön (B:0.40 + L:0.60)
     # IF eğitimliyse 4-katman tam ensemble: B:0.30 + L:0.35 + IF:0.25 + BCN:0.10
-    # Akademik dayanak: Ensemble Anomaly Detectors (Ahmad et al., NDSS 2024)
     b_score = behavioral.get("anomaly_score", 0.0)
     if iforest and iforest.loaded:
         final = round(b_score * 0.30 + lstm_score * 0.35 + if_score * 0.25 + beacon_score * 0.10, 4)

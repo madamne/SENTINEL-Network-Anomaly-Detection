@@ -5,8 +5,6 @@ Kaynak:
   Liu et al. (2012) "Isolation Forest", IEEE ICDM 2008.
   Çakır & Güvenç (2023) "Network Intrusion Detection via Isolation Forest
     with Feature Engineering", IEEE NetSoft 2023.
-  Ahmad et al. (2024) "Ensemble Anomaly Detection for IoT Networks",
-    NDSS Symposium 2024.
 
 Neden LSTM Autoencoder'a ek?
   - LSTM → zamansal örüntüleri yakalar (pencereler arası ilişki)
